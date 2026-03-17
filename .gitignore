@@ -1,18 +1,18 @@
 # -------------------------------
 # Miscellaneous system files
 # -------------------------------
-*.class              # Java class files
-*.log                # Log files
-*.pyc                # Compiled Python files
-*.swp                # Swap files
-.DS_Store            # macOS Finder metadata
-.atom/               # Atom editor settings
-.build/              # Custom build folder
-.buildlog/           # Build logs
-.history             # Local history files
-.svn/                # Subversion metadata
-.swiftpm/            # Swift Package Manager files
-migrate_working_dir/ # Migration working directory
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
 
 # -------------------------------
 # IntelliJ / JetBrains IDE files
@@ -20,30 +20,30 @@ migrate_working_dir/ # Migration working directory
 *.iml
 *.ipr
 *.iws
-.idea/               # IntelliJ project settings
+.idea/
 
 # -------------------------------
 # VS Code (optional)
-# Uncomment if you don’t want to share workspace settings
+# -------------------------------
 #.vscode/
 
 # -------------------------------
 # Flutter / Dart / Pub related
 # -------------------------------
-**/doc/api/                  # Generated API docs
-**/ios/Flutter/.last_build_id # iOS build ID file
-.dart_tool/                  # Dart tool cache
-.flutter-plugins-dependencies # Plugin dependency tracking
-.pub-cache/                  # Pub package cache
-.pub/                        # Pub working directory
-build/                       # Build output
-coverage/                    # Test coverage reports
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
 
 # -------------------------------
 # Symbolication & Obfuscation
 # -------------------------------
-app.*.symbols     # Symbolication files
-app.*.map.json    # Obfuscation mapping files
+app.*.symbols
+app.*.map.json
 
 # -------------------------------
 # Android build artifacts
@@ -52,20 +52,19 @@ app.*.map.json    # Obfuscation mapping files
 /android/app/profile
 /android/app/release
 
-
 # -------------------------------
 # iOS specific
 # -------------------------------
-ios/Pods/                     # CocoaPods dependencies
-ios/Flutter/Flutter.framework # Generated Flutter framework
-ios/Flutter/Flutter.podspec   # Podspec file
-ios/Flutter/Generated.xcconfig # Generated config
-ios/Flutter/ephemeral/        # Ephemeral build files
-ios/.symlinks/                # Symlinked dependencies
-ios/build/                    # iOS build output
-*.xcworkspace                 # Xcode workspace
-*.xcuserstate                 # Xcode user state
-*.xcuserdatad*                # Xcode user data
+ios/Pods/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/.symlinks/
+ios/build/
+*.xcworkspace
+*.xcuserstate
+*.xcuserdatad*
 
 # -------------------------------
 # macOS specific

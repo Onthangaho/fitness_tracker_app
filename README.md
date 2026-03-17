@@ -50,6 +50,21 @@ flutter pub get
 flutter run
 ```
 
+## Security and Secrets
+
+- Do not commit local runtime/cache folders such as `.dart_tool/`, `build/`, `.idea/`, and platform ephemeral files.
+- If you add third-party API keys later, keep them out of git (for example in local env files or CI secrets) and load them at build/runtime.
+- If a key is ever exposed, rotate/revoke it immediately in the provider console and remove it from git history before pushing.
+
+### Fresh clone checklist (new PC)
+
+```bash
+flutter clean
+flutter pub get
+flutter test
+flutter run
+```
+
 ## Useful Commands
 
 ```bash

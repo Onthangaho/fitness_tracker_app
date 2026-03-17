@@ -35,11 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
     {'name': 'Cardio', 'status': 'Completed'},
     {'name': 'Strength Training', 'status': 'In Progress'},
     {'name': 'Yoga Flow', 'status': 'Pending'},
+    {'name':'Flexibility','status':'Pending'},
+    
   ];
   final List<IconData> workoutIcons = [
     Icons.directions_run,
     Icons.fitness_center,
     Icons.self_improvement,
+    Icons.accessibility_new,
   ];
   final Set<int> favoriteWorkouts = {};
 
@@ -59,20 +62,30 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         leading: Icon(Icons.fitness_center),
         actions: [
-          IconButton(onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Profile feature coming soon!'),
-              backgroundColor: Theme.of(context).colorScheme.primary,)
-            );
-          }, icon: Icon(Icons.account_circle)),
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Profile feature coming soon!'),
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              );
+            },
+            icon: Icon(Icons.account_circle),
+          ),
           Stack(
             children: [
-              IconButton(onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Notifications feature coming soon!'),
-                  backgroundColor: Theme.of(context).colorScheme.primary,)
-                );
-              }, icon: Icon(Icons.notifications)),
+              IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Notifications feature coming soon!'),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                  );
+                },
+                icon: Icon(Icons.notifications),
+              ),
               Positioned(
                 top: 8,
                 right: 8,
@@ -98,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -114,36 +128,106 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            Container(
+            SizedBox(
+              height: 150,
               width: double.infinity,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.shadow.withValues(alpha:0.1 ),
-                    blurRadius: 6,
-                    offset: const Offset(0,2)
-                  )
-                ]
-              ),
-              child: Row(
+              child: Stack(
                 children: [
-                  Icon(
-                    Icons.star,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.deepOrange[400]!,
+                          Colors.deepOrange[700]!,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Featured Workout of the Day',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 12,
+                    right: 12,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Starting Featured Workout!....'),
+                            backgroundColor: Colors.deepOrange,
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.deepOrange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text('Start'),
+                    ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 24,),
+
+           const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Your Workouts',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('View All Workouts feature coming soon!'),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                    );
+                  },
+                  child: Text('View All'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   int crossAxisCount;
+                  // Adjust grid layout based on screen width for responsiveness
+                  //this is for a phone screen, it will show 1 workout per row
                   if (constraints.maxWidth < 600) {
                     crossAxisCount = 1;
+                    //
                   } else if (constraints.maxWidth < 900) {
                     crossAxisCount = 2;
                   } else {
@@ -159,25 +243,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       childAspectRatio: 1.5,
                     ),
                     itemBuilder: (context, index) {
-                     final workout = workouts[index];
+                      final workout = workouts[index];
 
-                     return WorkoutTile(
-                      workoutName: workout['name']!,
-                      icon: workoutIcons[index],
-                      status: workout['status']!,
-                      isFavorite: favoriteWorkouts.contains(index),
-                      onFavoriteToggle: () {
-                        setState(() {
-                          if(favoriteWorkouts.contains(index)){
-                            favoriteWorkouts.remove(index);
-                          }else{
-                            favoriteWorkouts.add(index);
-                          }
-                        });
-                      },
-                     );
-                     
-                      
+                      return WorkoutTile(
+                        workoutName: workout['name']!,
+                        icon: workoutIcons[index],
+                        status: workout['status']!,
+                        isFavorite: favoriteWorkouts.contains(index),
+                        onFavoriteToggle: () {
+                          setState(() {
+                            if (favoriteWorkouts.contains(index)) {
+                              favoriteWorkouts.remove(index);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Removed from favorites'),
+                                  backgroundColor: Colors.deepOrange,
+                                ),
+                              );
+                            } else {
+                              favoriteWorkouts.add(index);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Added to favorites'),
+                                  backgroundColor: Colors.deepOrange,
+                                ),
+                              );
+                            }
+                          });
+                        },
+                      );
                     },
                   );
                 },

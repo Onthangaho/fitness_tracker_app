@@ -75,6 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   minWidth: 8,
                   minHeight: 8,
                 ),
+                child: Text(
+                  '3',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                
               ),
               

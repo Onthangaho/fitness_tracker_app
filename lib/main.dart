@@ -51,8 +51,37 @@ class _HomeScreenState extends State<HomeScreen> {
               
             },
             icon: Icon(Icons.account_circle),
+            
+          ),
+           Stack(
+            children:[ IconButton(
+              onPressed: () {
+                
+              },
+              icon: Icon(Icons.notifications),
+              
+            ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                padding: EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
 
-          )
+                ),
+                constraints: BoxConstraints(
+                  minWidth: 8,
+                  minHeight: 8,
+                ),
+               
+              ),
+              
+
+            )
+            ]
+          ),
         ],
         
       ),

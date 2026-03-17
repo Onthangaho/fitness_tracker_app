@@ -1,14 +1,17 @@
-# Fitness_Tracker_App
-Fitness Tracker is a beginner‑friendly Flutter application designed to help users stay motivated on their fitness journey
+# Fitness Tracker App
+
+Fitness Tracker is a beginner-friendly Flutter app that helps users stay motivated with a clean home dashboard, workout cards, and quick feedback actions.
 
 ## Overview
 
-This project currently includes a starter home screen with:
+This project currently includes:
 
-- A branded app bar (`Fitness Tracker`)
-- A welcome message for the current user (defaults to **Guest User**)
-- A profile action button (placeholder)
-- A floating action button to add future fitness entries (placeholder)
+- A branded app bar with profile and notifications actions
+- A welcome section for the current user (defaults to Guest User)
+- A featured workout card with a call-to-action button
+- A responsive workouts grid (1/2/3 columns depending on width)
+- Favorite toggle interactions and snack-bar feedback
+- Reusable workout card widget rendering each workout tile
 
 The app is built with Material 3 and a deep orange theme.
 
@@ -22,9 +25,10 @@ The app is built with Material 3 and a deep orange theme.
 
 Key files:
 
-- `lib/main.dart` – app entry point and UI scaffold
-- `test/widget_test.dart` – starter widget test
-- `pubspec.yaml` – dependencies and project metadata
+- `lib/main.dart` - app entry point, theme, home screen, and responsive layout
+- `lib/workout_tile.dart` - reusable workout tile UI component
+- `test/widget_test.dart` - home screen smoke test
+- `pubspec.yaml` - dependencies, SDK constraint, and assets
 
 ## Requirements
 
@@ -80,8 +84,23 @@ flutter run -d chrome
 
 ## Current Behavior
 
-- The username is currently not persisted and defaults to `Guest User`.
-- The profile icon button and add button are intentionally placeholders for future functionality.
+- Username is currently not persisted and defaults to Guest User.
+- Profile/notifications/view-all actions currently show snack-bar placeholders.
+- Featured workout start action shows a snack-bar confirmation.
+- Workout favorites can be toggled from each tile.
+
+## Troubleshooting
+
+- If dependency install fails, run:
+
+```bash
+dart pub get --no-example
+```
+
+- If VS Code still reports stale `pubspec.yaml` parsing errors after a fix:
+	- Save the file
+	- Run **Dart: Restart Analysis Server** from the Command Palette
+	- Re-run `dart pub get --no-example`
 
 ## Roadmap Ideas
 

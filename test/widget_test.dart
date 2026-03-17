@@ -15,7 +15,8 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     expect(find.text('Fitness Tracker'), findsOneWidget);
-    expect(find.text('Welcome, GUEST USER! Ready to be fit?'), findsOneWidget);
+    expect(find.text('Welcome, Guest User'), findsOneWidget);
+    expect(find.text('Ready to take your health Seriously?'), findsOneWidget);
     expect(find.byIcon(Icons.add), findsOneWidget);
     expect(find.byIcon(Icons.notifications), findsOneWidget);
   });

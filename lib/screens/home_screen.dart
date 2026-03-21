@@ -4,7 +4,7 @@ import 'package:fitness_tracker_app/widgets/welcome_greeting.dart';
 import 'package:fitness_tracker_app/widgets/workouts_section_header.dart';
 import 'package:fitness_tracker_app/widgets/responsive_workouts_grid.dart';
 import 'package:fitness_tracker_app/screens/bmi_calculator_screen.dart';
-import 'package:fitness_tracker_app/add_exercise_screen.dart';
+import 'package:fitness_tracker_app/screens/add_exercise_screen.dart';
 import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -227,6 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Add Exercise',
         onPressed: _openAddExerciseForm,
         child: const Icon(Icons.add),
       ),

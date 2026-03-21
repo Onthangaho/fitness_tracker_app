@@ -16,6 +16,21 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
   double? _bmiValue;
   BMICategory? _bmiCategory;
 
+  void _showSnackBar(
+    String message, {
+    Color? backgroundColor,
+    Duration? duration,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: backgroundColor,
+        behavior: SnackBarBehavior.floating,
+        duration: duration ?? const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,12 +50,9 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
     final weight = double.tryParse(_weightController.text);
 
     if (height == null || weight == null || height <= 0 || weight <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please enter valid height and weight values'),
-          backgroundColor: Colors.red[600],
-          behavior: SnackBarBehavior.floating,
-        ),
+      _showSnackBar(
+        'Please enter valid height and weight values',
+        backgroundColor: Colors.red[600],
       );
       return;
     }
@@ -73,12 +85,9 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
       _bmiCategory = null;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Calculator reset'),
-        duration: Duration(seconds: 1),
-        behavior: SnackBarBehavior.floating,
-      ),
+    _showSnackBar(
+      'Calculator reset',
+      duration: const Duration(seconds: 1),
     );
   }
 

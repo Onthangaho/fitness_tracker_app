@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class WorkoutTile extends StatelessWidget {
@@ -7,6 +6,7 @@ class WorkoutTile extends StatelessWidget {
   final IconData icon;
   final bool isFavorite;
   final VoidCallback onFavoriteToggle;
+
   const WorkoutTile({
     super.key,
     required this.workoutName,
@@ -21,7 +21,7 @@ class WorkoutTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
@@ -29,7 +29,7 @@ class WorkoutTile extends StatelessWidget {
           BoxShadow(
             color: colorScheme.shadow.withValues(alpha: 0.2),
             blurRadius: 8,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
         border: Border.all(
@@ -51,33 +51,33 @@ class WorkoutTile extends StatelessWidget {
                     onPressed: onFavoriteToggle,
                     icon: Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite
-                          ? Colors.red
-                          : colorScheme.onSurfaceVariant,
+                      color: isFavorite ? Colors.red : colorScheme.onSurfaceVariant,
                     ),
+                    tooltip: isFavorite ? 'Remove from favorites' : 'Add to favorites',
                   ),
-
                 ],
               ),
-             const SizedBox(height: 12),
+              const SizedBox(height: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(workoutName,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  Text(
+                    workoutName,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  Text(status,
+                  Text(
+                    status,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: colorScheme.onPrimaryContainer,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ],

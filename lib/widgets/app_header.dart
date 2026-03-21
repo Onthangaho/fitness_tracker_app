@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'notification_badge.dart';
 
-
 class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
-  
   final VoidCallback onProfileTap;
-  
-  
   final VoidCallback onNotificationsTap;
-  
- 
   final String notificationCount;
 
   const FitnessAppBar({
@@ -25,32 +19,17 @@ class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-     
       backgroundColor: Colors.deepOrange[900],
-      
       foregroundColor: Colors.white,
-      
-      
-      title: const Text(
-        "Fitness Tracker",
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      
+      title: const Text("Fitness Tracker", style: TextStyle(fontWeight: FontWeight.bold)),
       centerTitle: true,
-      
-      
-      leading: Icon(Icons.fitness_center),
-      
-      
+      leading: const Icon(Icons.fitness_center),
       actions: [
-        
         IconButton(
           onPressed: onProfileTap,
           icon: const Icon(Icons.account_circle),
           tooltip: 'Profile',
         ),
-        
-        
         Stack(
           children: [
             IconButton(
@@ -58,8 +37,6 @@ class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.notifications),
               tooltip: 'Notifications',
             ),
-            
-           
             NotificationBadge(count: notificationCount),
           ],
         ),

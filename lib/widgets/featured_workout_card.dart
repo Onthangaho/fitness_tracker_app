@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FeaturedWorkoutCard extends StatelessWidget {
-  
   final String title;
-  
-  
   final String description;
-  
-  /// Callback function triggered when the "Start" button is pressed
   final VoidCallback onStartPressed;
 
   const FeaturedWorkoutCard({
@@ -24,30 +19,22 @@ class FeaturedWorkoutCard extends StatelessWidget {
       width: double.infinity,
       child: Stack(
         children: [
-          
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              
               gradient: LinearGradient(
-                colors: [
-                  Colors.deepOrange[400]!,
-                  Colors.deepOrange[700]!,
-                ],
+                colors: [Colors.deepOrange[400]!, Colors.deepOrange[700]!],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
           ),
-          
-          
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // Featured workout title
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -55,10 +42,7 @@ class FeaturedWorkoutCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                
                 const SizedBox(height: 8),
-                
-               
                 Text(
                   description,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -70,18 +54,14 @@ class FeaturedWorkoutCard extends StatelessWidget {
               ],
             ),
           ),
-          
-          
           Positioned(
             bottom: 12,
             right: 12,
             child: ElevatedButton(
               onPressed: onStartPressed,
               style: ElevatedButton.styleFrom(
-                
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.deepOrange,
-                
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

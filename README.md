@@ -37,10 +37,10 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 
 ```text
 lib/
-├── add_exercise_screen.dart
 ├── main.dart
 ├── workout_tile.dart
 ├── screens/
+│   ├── add_exercise_screen.dart
 │   ├── home_screen.dart
 │   └── bmi_calculator_screen.dart
 └── widgets/

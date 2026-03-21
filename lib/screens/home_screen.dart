@@ -4,6 +4,7 @@ import 'package:fitness_tracker_app/widgets/welcome_greeting.dart';
 import 'package:fitness_tracker_app/widgets/workouts_section_header.dart';
 import 'package:fitness_tracker_app/widgets/responsive_workouts_grid.dart';
 import 'package:fitness_tracker_app/screens/bmi_calculator_screen.dart';
+import 'package:fitness_tracker_app/add_exercise_screen.dart';
 import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +30,68 @@ class _HomeScreenState extends State<HomeScreen> {
   final Set<int> favoriteWorkouts = {};
 
   String? username;
+  Map<String, dynamic>? _lastAddedExercise;
+
+  void _showSnackBar(String message, {Color? backgroundColor}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
+      ),
+    );
+  }
+
+  void _toggleFavoriteWorkout(int index) {
+    setState(() {
+      if (favoriteWorkouts.contains(index)) {
+        favoriteWorkouts.remove(index);
+        _showSnackBar('Removed from favorites', backgroundColor: Colors.deepOrange);
+      } else {
+        favoriteWorkouts.add(index);
+        _showSnackBar('Added to favorites', backgroundColor: Colors.deepOrange);
+      }
+    });
+  }
+
+  Future<void> _openAddExerciseForm() async {
+    final exerciseData = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddExerciseScreen(),
+      ),
+    );
+
+    if (exerciseData == null) {
+      return;
+    }
+
+    final String name = (exerciseData['name'] as String?) ?? 'Custom Exercise';
+    final int sets = (exerciseData['sets'] as int?) ?? 0;
+    final int reps = (exerciseData['reps'] as int?) ?? 0;
+    final double weight = (exerciseData['weight'] as double?) ?? 0;
+    final String muscleGroup = (exerciseData['muscleGroup'] as String?) ?? 'General';
+
+    final String weightText = weight % 1 == 0
+        ? weight.toStringAsFixed(0)
+        : weight.toStringAsFixed(1);
+
+    setState(() {
+      workouts.add({
+        'name': name,
+        'status': '$sets sets • $reps reps • ${weightText}kg • $muscleGroup',
+      });
+      workoutIcons.add(Icons.sports_gymnastics);
+      _lastAddedExercise = {
+        'name': name,
+        'sets': sets,
+        'reps': reps,
+        'weight': weightText,
+        'muscleGroup': muscleGroup,
+      };
+    });
+
+    _showSnackBar('$name saved successfully', backgroundColor: Colors.green[700]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +100,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: FitnessAppBar(
         onProfileTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Profile feature coming soon!'),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-            ),
-          );
+          _showSnackBar('Profile feature coming soon!');
         },
 
         onNotificationsTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Notifications feature coming soon!'),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-            ),
-          );
+          _showSnackBar('Notifications feature coming soon!');
         },
 
         notificationCount: '3',
@@ -69,11 +122,9 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'Featured Workout of the Day',
               description: 'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
               onStartPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Starting Featured Workout!....'),
-                    backgroundColor: Colors.deepOrange,
-                  ),
+                _showSnackBar(
+                  'Starting Featured Workout!....',
+                  backgroundColor: Colors.deepOrange,
                 );
               },
             ),
@@ -120,14 +171,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 24),
 
+            if (_lastAddedExercise != null) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Last Added Exercise',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${_lastAddedExercise!['name']} • ${_lastAddedExercise!['muscleGroup']}',
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${_lastAddedExercise!['sets']} sets × ${_lastAddedExercise!['reps']} reps × ${_lastAddedExercise!['weight']}kg',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+
             WorkoutsSectionHeader(
               onViewAllPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('View All Workouts feature coming soon!'),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                );
+                _showSnackBar('View All Workouts feature coming soon!');
               },
             ),
 
@@ -138,30 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 workouts: workouts,
                 workoutIcons: workoutIcons,
                 favoriteWorkouts: favoriteWorkouts,
-
-                onFavoriteToggle: (index) {
-                  setState(() {
-                    if (favoriteWorkouts.contains(index)) {
-
-                      favoriteWorkouts.remove(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Removed from favorites'),
-                          backgroundColor: Colors.deepOrange,
-                        ),
-                      );
-                    } else {
-
-                      favoriteWorkouts.add(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Added to favorites'),
-                          backgroundColor: Colors.deepOrange,
-                        ),
-                      );
-                    }
-                  });
-                },
+                onFavoriteToggle: _toggleFavoriteWorkout,
               ),
             ),
           ],
@@ -169,14 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Add Workout feature coming soon!'),
-              backgroundColor: Colors.deepOrange,
-            ),
-          );
-        },
+        onPressed: _openAddExerciseForm,
         child: const Icon(Icons.add),
       ),
     );

@@ -1,6 +1,6 @@
 # Fitness Tracker App
 
-Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboard and a BMI Calculator.
+Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboard, BMI Calculator, and validated custom exercise form.
 
 ## Features
 
@@ -9,8 +9,17 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Welcome greeting
 	- Featured workout card
 	- BMI Calculator quick-access card
+	- Add Exercise flow from FAB (`await Navigator.push(...)`)
 	- Responsive workouts grid (1/2/3 columns based on width)
 	- Favorite toggles with snackbar feedback
+- Add Exercise screen (Assignment 1.3B):
+	- `Form` + `GlobalKey<FormState>`
+	- `TextEditingController` for all fields with proper dispose
+	- Fields: Exercise Name, Sets, Reps, Weight (kg)
+	- Production-style validation (type checks + ranges)
+	- Required nullable dropdown: Target Muscle Group
+	- Live Total Volume preview using controller listeners
+	- Full-width save button returning data via `Navigator.pop`
 - BMI Calculator screen with:
 	- Height + weight input
 	- BMI calculation using $BMI = \frac{weight\,(kg)}{height\,(m)^2}$
@@ -28,6 +37,7 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 
 ```text
 lib/
+├── add_exercise_screen.dart
 ├── main.dart
 ├── workout_tile.dart
 ├── screens/
@@ -70,8 +80,9 @@ flutter run -d chrome
 ## Notes
 
 - Username currently defaults to `Guest User`.
-- Profile, notifications, view-all, and add-workout actions currently show placeholder snackbars.
+- Profile, notifications, and view-all actions currently show placeholder snackbars.
 - BMI Calculator intentionally uses custom `InkWell` interactions for assignment requirements.
+- Custom exercises are validated before being added to the workout list.
 
 ## License
 

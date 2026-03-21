@@ -1,19 +1,22 @@
 # Fitness Tracker App
 
-Fitness Tracker is a beginner-friendly Flutter app that helps users stay motivated with a clean home dashboard, workout cards, and quick feedback actions.
+Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboard and a BMI Calculator.
 
-## Overview
+## Features
 
-This project currently includes:
-
-- A branded app bar with profile and notifications actions
-- A welcome section for the current user (defaults to Guest User)
-- A featured workout card with a call-to-action button
-- A responsive workouts grid (1/2/3 columns depending on width)
-- Favorite toggle interactions and snack-bar feedback
-- Reusable workout card widget rendering each workout tile
-
-The app is built with Material 3 and a deep orange theme.
+- Home screen with:
+	- Custom app bar (profile + notifications actions)
+	- Welcome greeting
+	- Featured workout card
+	- BMI Calculator quick-access card
+	- Responsive workouts grid (1/2/3 columns based on width)
+	- Favorite toggles with snackbar feedback
+- BMI Calculator screen with:
+	- Height + weight input
+	- BMI calculation using $BMI = \frac{weight\,(kg)}{height\,(m)^2}$
+	- Local state updates via `setState()`
+	- Dynamic category feedback (Underweight/Normal/Overweight/Obese)
+	- Custom `InkWell`-based button widget
 
 ## Tech Stack
 
@@ -21,104 +24,59 @@ The app is built with Material 3 and a deep orange theme.
 - Dart
 - Material 3 (`useMaterial3: true`)
 
-## Project Structure
+## Current Project Structure
 
-Key files:
-
-- `lib/main.dart` - app entry point, theme, home screen, and responsive layout
-- `lib/workout_tile.dart` - reusable workout tile UI component
-- `test/widget_test.dart` - home screen smoke test
-- `pubspec.yaml` - dependencies, SDK constraint, and assets
-
-## Requirements
-
-Before running the app, make sure you have:
-
-- [Flutter SDK](https://docs.flutter.dev/get-started/install)
-- A configured device/emulator (Android, iOS, Web, Windows, Linux, or macOS)
-- Dart SDK (included with Flutter)
+```text
+lib/
+├── main.dart
+├── workout_tile.dart
+├── screens/
+│   ├── home_screen.dart
+│   └── bmi_calculator_screen.dart
+└── widgets/
+		├── app_header.dart
+		├── custom_inkwell_button.dart
+		├── featured_workout_card.dart
+		├── input_card.dart
+		├── notification_badge.dart
+		├── responsive_workouts_grid.dart
+		├── result_display_box.dart
+		├── welcome_greeting.dart
+		└── workouts_section_header.dart
+```
 
 ## Getting Started
 
-1. Clone this repository.
-2. Open the project in VS Code or Android Studio.
-3. Install dependencies:
+### Requirements
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install)
+- A configured device/emulator (Android, iOS, Web, Windows, Linux, or macOS)
+
+### Run Locally
 
 ```bash
 flutter pub get
-```
-
-4. Run the app:
-
-```bash
-flutter run
-```
-
-## Security and Secrets
-
-- Do not commit local runtime/cache folders such as `.dart_tool/`, `build/`, `.idea/`, and platform ephemeral files.
-- If you add third-party API keys later, keep them out of git (for example in local env files or CI secrets) and load them at build/runtime.
-- If a key is ever exposed, rotate/revoke it immediately in the provider console and remove it from git history before pushing.
-
-### Fresh clone checklist (new PC)
-
-```bash
-flutter clean
-flutter pub get
-flutter test
 flutter run
 ```
 
 ## Useful Commands
 
 ```bash
-# Analyze code
 flutter analyze
-
-# Run tests
 flutter test
-
-# Run on Chrome
 flutter run -d chrome
 ```
 
-## Current Behavior
+## Notes
 
-- Username is currently not persisted and defaults to Guest User.
-- Profile/notifications/view-all actions currently show snack-bar placeholders.
-- Featured workout start action shows a snack-bar confirmation.
-- Workout favorites can be toggled from each tile.
-
-## Troubleshooting
-
-- If dependency install fails, run:
-
-```bash
-dart pub get --no-example
-```
-
-- If VS Code still reports stale `pubspec.yaml` parsing errors after a fix:
-	- Save the file
-	- Run **Dart: Restart Analysis Server** from the Command Palette
-	- Re-run `dart pub get --no-example`
-
-## Roadmap Ideas
-
-- User profile and authentication
-- Workout logging (sets, reps, duration)
-- Progress charts and history
-- Goal setting and reminders
-- Local/database/cloud persistence
-
-## Contributing
-
-1. Create a feature branch.
-2. Make your changes.
-3. Run `flutter analyze` and `flutter test`.
-4. Open a pull request.
+- Username currently defaults to `Guest User`.
+- Profile, notifications, view-all, and add-workout actions currently show placeholder snackbars.
+- BMI Calculator intentionally uses custom `InkWell` interactions for assignment requirements.
 
 ## License
 
-No license file is currently defined in this repository.
+This project is licensed under the MIT License. See `LICENSE`.
 
-## Created by Onthangaho Magoro
+## Author
+
+Onthangaho Magoro

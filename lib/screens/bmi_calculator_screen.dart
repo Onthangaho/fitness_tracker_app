@@ -56,6 +56,22 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
       );
       return;
     }
+    if (height > 300 || weight > 500) {
+      _showSnackBar(
+        'Please enter realistic height and weight values',
+        backgroundColor: Colors.red[600],
+      );
+      return;
+    }
+    if (height < 50 || weight < 10) {
+      _showSnackBar(
+        'Please enter realistic height and weight values',
+        backgroundColor: Colors.red[600],
+      );
+      return;
+    }
+  
+
 
     final heightInMeters = height / 100;
     final bmi = weight / (heightInMeters * heightInMeters);

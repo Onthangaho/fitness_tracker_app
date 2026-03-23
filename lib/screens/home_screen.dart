@@ -52,19 +52,20 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
+ //this function will open the AddExerciseScreen and wait for the result when the user saves a new exercise. The result will be a Map containing the exercise details, which we will then add to our workouts list and update the UI accordingly.
   Future<void> _openAddExerciseForm() async {
+    //the result from the AddExerciseScreen will be a Map<String, dynamic> containing the exercise details
     final exerciseData = await Navigator.push<Map<String, dynamic>>(
       context,
       MaterialPageRoute(
         builder: (context) => const AddExerciseScreen(),
       ),
     );
-
+//if the user cancels the form, exerciseData will be null
     if (exerciseData == null) {
       return;
     }
-
+     
     final String name = (exerciseData['name'] as String?) ?? 'Custom Exercise';
     final int sets = (exerciseData['sets'] as int?) ?? 0;
     final int reps = (exerciseData['reps'] as int?) ?? 0;
@@ -130,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 24),
-           
+          //the material widget with an InkWell allows us to create a tappable area that looks like a card. When the user taps on it, we navigate to the BMICalculatorScreen. The card has an icon, a title, and a forward arrow to indicate that it's clickable. 
             Material(
               color: Colors.transparent,
               child: InkWell(

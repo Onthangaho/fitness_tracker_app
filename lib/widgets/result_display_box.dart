@@ -97,7 +97,7 @@ class ResultDisplayBox extends StatelessWidget {
         ),
       );
     }
-
+    
     final categoryData = category!;
     final categoryColor = categoryData.color;
 

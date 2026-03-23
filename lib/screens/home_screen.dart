@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
                 borderRadius: BorderRadius.circular(12),
-                child: Container(
+                child: Ink(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.blue[50],

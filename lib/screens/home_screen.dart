@@ -222,6 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 favoriteWorkouts: favoriteWorkouts,
                 onFavoriteToggle: _toggleFavoriteWorkout,
                 onWorkoutTap: (index) {
+                  //if the user taps on a workout card that is beyond the first 4 categories, we simply return and do nothing. This is because we only have defined navigation for the first 4 categories (Cardio, Strength Training, Yoga Flow, Flexibility). For any additional workouts that might be added dynamically, we currently do not have a specific screen to navigate to, so we prevent any action from occurring when they are tapped.
                   if (index >= 4) {
                     return;
                   }
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final categoryName = workouts[index]['name']!;
                   final color = _categoryThemeColors[categoryName] ??
                       Theme.of(context).colorScheme.primary;
-
+                  //when a workout card is tapped, we navigate to the ExerciseListScreen for that category. We pass the category name, theme color, and icon data as arguments to the screen so that it can display the appropriate exercises and styling based on the selected workout category. 
                   Navigator.of(context).pushRouteWithArgs(
                     AppRoute.exerciseList,
                     ExerciseListArgs(

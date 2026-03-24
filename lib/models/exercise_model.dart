@@ -1,5 +1,4 @@
-class Exercise{
-
+class Exercise {
   final String id;
   final String name;
   final String muscleGroup;
@@ -16,29 +15,20 @@ class Exercise{
     required this.weight,
   });
 
-  double get totalVolume => sets * reps * weight;
+  /// Computed property: total volume (sets × reps × weight)
+  double get volume => sets * reps * weight;
 
   @override
- bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    //
-    return other is Exercise &&
-        other.id == id &&
-        other.name == name &&
-        other.muscleGroup == muscleGroup &&
-        other.sets == sets &&
-        other.reps == reps &&
-        other.weight == weight;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Exercise &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
-  int get hashCode {
-    return id.hashCode ^
-        name.hashCode ^
-        muscleGroup.hashCode ^
-        sets.hashCode ^
-        reps.hashCode ^
-        weight.hashCode;
-  }  
+  int get hashCode => id.hashCode;
 
+  @override
+  String toString() =>
+      'Exercise(id: $id, name: $name, muscleGroup: $muscleGroup, sets: $sets, reps: $reps, weight: $weight)';
 }

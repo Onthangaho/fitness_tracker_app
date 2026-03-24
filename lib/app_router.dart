@@ -16,7 +16,7 @@ class ExerciseListArgs {
     required this.iconData,
   });
 }
-
+// The ExerciseDetailArgs class is a simple data class that holds the details of an exercise. It includes the exercise name, muscle group, number of sets, reps, and weight. This class is used to pass exercise details as arguments when navigating to the ExerciseDetailScreen.
 class ExerciseDetailArgs {
   final String exerciseName;
   final String muscleGroup;

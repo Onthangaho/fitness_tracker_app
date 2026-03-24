@@ -12,7 +12,7 @@ class ExerciseListScreen extends StatelessWidget {
     required this.themeColor,
     required this.iconData,
   });
-
+ // This method returns a list of ExerciseDetailArgs based on the category name. It checks the category name against known categories (Cardio, Strength Training, Yoga/Flexibility) and returns a predefined list of exercises for each category. If the category does not match any of the known categories, it returns a default list of general exercises. Each ExerciseDetailArgs contains details about an exercise, such as its name, muscle group, sets, reps, and weight.
   List<ExerciseDetailArgs> _exercisesForCategory(String category) {
     final normalized = category.toLowerCase();
 
@@ -157,9 +157,19 @@ class ExerciseListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('$categoryName Exercises'),
-        backgroundColor: themeColor,
+        backgroundColor: Colors.deepOrange[900],
         foregroundColor: foregroundColor,
-        leading: Icon(iconData),
+        leading: IconButton(
+          tooltip: 'Go Back',
+            icon: Icon(Icons.navigate_before,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          actions: [
+            Icon(iconData, color: foregroundColor),
+            const SizedBox(width: 16),
+          ],
+      
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
@@ -179,6 +189,7 @@ class ExerciseListScreen extends StatelessWidget {
                 '${exercise.muscleGroup} • ${exercise.sets} sets × ${exercise.reps} reps',
               ),
               trailing: const Icon(Icons.chevron_right),
+              // When a user taps on an exercise card, we navigate to the ExerciseDetailScreen for that specific exercise. We pass the exercise details (name, muscle group, sets, reps, weight) as arguments to the screen so that it can display the appropriate information about the selected exercise.
               onTap: () {
                 Navigator.of(context).pushRouteWithArgs(
                   AppRoute.exerciseDetail,

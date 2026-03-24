@@ -28,6 +28,8 @@ class ExerciseDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(exerciseName),
+        backgroundColor: Colors.deepOrange[900],
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

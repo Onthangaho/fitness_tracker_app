@@ -9,10 +9,11 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Welcome greeting
 	- Featured workout card
 	- BMI Calculator quick-access card
-	- Add Exercise flow from FAB (`await Navigator.push(...)`)
+	- Add Exercise flow from FAB via centralized app router
 	- Responsive workouts grid (1/2/3 columns based on width)
 	- Favorite toggles with snackbar feedback
-- Add Exercise screen (Assignment 1.3B):
+	- Category tiles wired to type-safe navigation
+- Add Exercise screen :
 	- `Form` + `GlobalKey<FormState>`
 	- `TextEditingController` for all fields with proper dispose
 	- Fields: Exercise Name, Sets, Reps, Weight (kg)
@@ -27,6 +28,12 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Dynamic category feedback (Underweight/Normal/Overweight/Obese)
 	- Custom `InkWell`-based button widget
 
+- Assignment 2.1: Native Navigation & Data Passing:
+	- Centralized type-safe routing with enhanced enum generics
+	- Typed route contracts: `ExerciseListArgs`, `ExerciseDetailArgs`
+	- Dynamic AppBar theming from passed `Color` and `IconData`
+	- End-to-end navigation flow: Dashboard → Exercise List → Exercise Detail
+
 ## Tech Stack
 
 - Flutter
@@ -37,12 +44,14 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 
 ```text
 lib/
+├── app_router.dart
 ├── main.dart
-├── workout_tile.dart
 ├── screens/
 │   ├── add_exercise_screen.dart
-│   ├── home_screen.dart
-│   └── bmi_calculator_screen.dart
+│   ├── bmi_calculator_screen.dart
+│   ├── exercise_detail_screen.dart
+│   ├── exercise_list_screen.dart
+│   └── home_screen.dart
 └── widgets/
 		├── app_header.dart
 		├── custom_inkwell_button.dart
@@ -52,8 +61,18 @@ lib/
 		├── responsive_workouts_grid.dart
 		├── result_display_box.dart
 		├── welcome_greeting.dart
+		├── workout_tile.dart
 		└── workouts_section_header.dart
 ```
+
+## Assignment 2.1 Submission Files
+
+- `lib/app_router.dart`
+- `lib/screens/exercise_list_screen.dart`
+- `lib/screens/exercise_detail_screen.dart`
+- `lib/screens/home_screen.dart` (dashboard wiring)
+- `lib/widgets/workout_tile.dart`
+- `lib/widgets/responsive_workouts_grid.dart`
 
 ## Getting Started
 

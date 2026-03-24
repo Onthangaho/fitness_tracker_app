@@ -3,8 +3,7 @@ import 'package:fitness_tracker_app/widgets/featured_workout_card.dart';
 import 'package:fitness_tracker_app/widgets/welcome_greeting.dart';
 import 'package:fitness_tracker_app/widgets/workouts_section_header.dart';
 import 'package:fitness_tracker_app/widgets/responsive_workouts_grid.dart';
-import 'package:fitness_tracker_app/screens/bmi_calculator_screen.dart';
-import 'package:fitness_tracker_app/screens/add_exercise_screen.dart';
+import 'package:fitness_tracker_app/app_router.dart';
 import 'package:flutter/material.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,6 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   String? username;
   Map<String, dynamic>? _lastAddedExercise;
 
+  final Map<String, Color> _categoryThemeColors = {
+    'Cardio': Colors.red,
+    'Strength Training': Colors.blue,
+    'Yoga Flow': Colors.deepPurple,
+    'Flexibility': Colors.green,
+  };
+
   void _showSnackBar(String message, {Color? backgroundColor}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -55,11 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
  //this function will open the AddExerciseScreen and wait for the result when the user saves a new exercise. The result will be a Map containing the exercise details, which we will then add to our workouts list and update the UI accordingly.
   Future<void> _openAddExerciseForm() async {
     //the result from the AddExerciseScreen will be a Map<String, dynamic> containing the exercise details
-    final exerciseData = await Navigator.push<Map<String, dynamic>>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddExerciseScreen(),
-      ),
+    final exerciseData = await Navigator.of(context).pushRoute<Map<String, dynamic>>(
+      AppRoute.addExercise,
     );
 //if the user cancels the form, exerciseData will be null
     if (exerciseData == null) {
@@ -136,11 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BMICalculatorScreen(),
-                    ),
+                  Navigator.of(context).pushRoute(
+                    AppRoute.bmiCalculator,
                   );
                 },
                 borderRadius: BorderRadius.circular(12),
@@ -221,6 +221,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 workoutIcons: workoutIcons,
                 favoriteWorkouts: favoriteWorkouts,
                 onFavoriteToggle: _toggleFavoriteWorkout,
+                onWorkoutTap: (index) {
+                  if (index >= 4) {
+                    return;
+                  }
+
+                  final categoryName = workouts[index]['name']!;
+                  final color = _categoryThemeColors[categoryName] ??
+                      Theme.of(context).colorScheme.primary;
+
+                  Navigator.of(context).pushRouteWithArgs(
+                    AppRoute.exerciseList,
+                    ExerciseListArgs(
+                      categoryName: categoryName,
+                      themeColor: color,
+                      iconData: workoutIcons[index],
+                    ),
+                  );
+                },
               ),
             ),
           ],

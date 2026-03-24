@@ -1,4 +1,4 @@
-import 'package:fitness_tracker_app/workout_tile.dart';
+import 'package:fitness_tracker_app/widgets/workout_tile.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveWorkoutsGrid extends StatelessWidget {
@@ -6,6 +6,7 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
   final List<IconData> workoutIcons;
   final Set<int> favoriteWorkouts;
   final Function(int) onFavoriteToggle;
+  final Function(int)? onWorkoutTap;
 
   const ResponsiveWorkoutsGrid({
     super.key,
@@ -13,6 +14,7 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
     required this.workoutIcons,
     required this.favoriteWorkouts,
     required this.onFavoriteToggle,
+    this.onWorkoutTap,
   });
 
   @override
@@ -47,6 +49,11 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
               onFavoriteToggle: () {
                 onFavoriteToggle(index);
               },
+              onTap: onWorkoutTap == null
+                  ? null
+                  : () {
+                      onWorkoutTap!(index);
+                    },
             );
           },
         );

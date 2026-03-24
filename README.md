@@ -13,7 +13,7 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Responsive workouts grid (1/2/3 columns based on width)
 	- Favorite toggles with snackbar feedback
 	- Category tiles wired to type-safe navigation
-- Add Exercise screen (Assignment 1.3B):
+- Add Exercise screen :
 	- `Form` + `GlobalKey<FormState>`
 	- `TextEditingController` for all fields with proper dispose
 	- Fields: Exercise Name, Sets, Reps, Weight (kg)

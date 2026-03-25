@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WelcomeGreeting extends StatelessWidget {
-  final String displayName;
+  final String greetingText;
 
-  const WelcomeGreeting({super.key, required this.displayName});
+  const WelcomeGreeting({super.key, required this.greetingText});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class WelcomeGreeting extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Welcome, $displayName',
+          greetingText,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
           ),

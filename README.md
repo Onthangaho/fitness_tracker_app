@@ -34,11 +34,21 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Dynamic AppBar theming from passed `Color` and `IconData`
 	- End-to-end navigation flow: Dashboard → Exercise List → Exercise Detail
 
+- Assignment 2.3: State Management with Provider:
+	- Multi-provider architecture (ExerciseProvider + RoutineProvider)
+	- Browse Exercises screen with real-time routine status tracking
+	- Routine Summary screen with comprehensive statistics
+	- Computed properties: total volume, total sets, muscle group breakdown
+	- Reactive UI updates using `Consumer` widgets
+	- Confirmation dialogs for destructive actions (clear routine)
+	- Empty state handling with user guidance
+
 ## Tech Stack
 
-- Flutter
-- Dart
-- Material 3 (`useMaterial3: true`)
+- **Framework**: Flutter
+- **Language**: Dart 3.10.4+
+- **State Management**: Provider 6.1.5+
+- **UI Toolkit**: Material 3 (`useMaterial3: true`)
 
 ## Current Project Structure
 
@@ -46,23 +56,30 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 lib/
 ├── app_router.dart
 ├── main.dart
+├── models/
+│   └── exercise_model.dart
+├── providers/
+│   ├── exercise_provider.dart
+│   └── routine_provider.dart
 ├── screens/
 │   ├── add_exercise_screen.dart
 │   ├── bmi_calculator_screen.dart
+│   ├── exercise_browse_screen.dart
 │   ├── exercise_detail_screen.dart
 │   ├── exercise_list_screen.dart
-│   └── home_screen.dart
+│   ├── home_screen.dart
+│   └── routine_summary_screen.dart
 └── widgets/
-		├── app_header.dart
-		├── custom_inkwell_button.dart
-		├── featured_workout_card.dart
-		├── input_card.dart
-		├── notification_badge.dart
-		├── responsive_workouts_grid.dart
-		├── result_display_box.dart
-		├── welcome_greeting.dart
-		├── workout_tile.dart
-		└── workouts_section_header.dart
+    ├── app_header.dart
+    ├── custom_inkwell_button.dart
+    ├── featured_workout_card.dart
+    ├── input_card.dart
+    ├── notification_badge.dart
+    ├── responsive_workouts_grid.dart
+    ├── result_display_box.dart
+    ├── welcome_greeting.dart
+    ├── workout_tile.dart
+    └── workouts_section_header.dart
 ```
 
 ## Assignment 2.1 Submission Files
@@ -73,6 +90,14 @@ lib/
 - `lib/screens/home_screen.dart` (dashboard wiring)
 - `lib/widgets/workout_tile.dart`
 - `lib/widgets/responsive_workouts_grid.dart`
+
+## Assignment 2.3 Submission Files
+
+- `lib/providers/routine_provider.dart` (Core state management)
+- `lib/screens/exercise_browse_screen.dart` (Browse & add exercises)
+- `lib/screens/routine_summary_screen.dart` (View routine stats)
+- `lib/app_router.dart` (Updated with new routes)
+- `lib/main.dart` (MultiProvider setup)
 
 ## Getting Started
 

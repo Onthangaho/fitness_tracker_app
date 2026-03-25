@@ -3,6 +3,8 @@ import 'package:fitness_tracker_app/screens/exercise_list_screen.dart';
 import 'package:fitness_tracker_app/screens/add_exercise_screen.dart';
 import 'package:fitness_tracker_app/screens/bmi_calculator_screen.dart';
 import 'package:fitness_tracker_app/screens/home_screen.dart';
+import 'package:fitness_tracker_app/screens/exercise_browse_screen.dart';
+import 'package:fitness_tracker_app/screens/routine_summary_screen.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseListArgs {
@@ -38,7 +40,9 @@ enum AppRoute<T> {
   exerciseList<ExerciseListArgs>(),
   exerciseDetail<ExerciseDetailArgs>(),
   bmiCalculator<void>(),
-  addExercise<void>();
+  addExercise<void>(),
+  exerciseBrowse<void>(),
+  routineSummary<void>();
 
   const AppRoute();
 
@@ -79,6 +83,16 @@ enum AppRoute<T> {
       case AppRoute.addExercise:
         return MaterialPageRoute<R>(
           builder: (_) => const AddExerciseScreen(),
+          settings: RouteSettings(name: name),
+        );
+      case AppRoute.exerciseBrowse:
+        return MaterialPageRoute<R>(
+          builder: (_) => const ExerciseBrowseScreen(),
+          settings: RouteSettings(name: name),
+        );
+      case AppRoute.routineSummary:
+        return MaterialPageRoute<R>(
+          builder: (_) => const RoutineSummaryScreen(),
           settings: RouteSettings(name: name),
         );
     }

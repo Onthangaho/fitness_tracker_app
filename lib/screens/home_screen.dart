@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 24),
-          //the material widget with an InkWell allows us to create a tappable area that looks like a card. When the user taps on it, we navigate to the BMICalculatorScreen. The card has an icon, a title, and a forward arrow to indicate that it's clickable. 
+            //the material widget with an InkWell allows us to create a tappable area that looks like a card. When the user taps on it, we navigate to the BMICalculatorScreen. The card has an icon, a title, and a forward arrow to indicate that it's clickable. 
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -170,7 +170,82 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
+
+            // Exercise Browse and Routine Summary Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushRoute(
+                          AppRoute.exerciseBrowse,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Ink(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.green[200]!, width: 1.5),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.shopping_cart_outlined, color: Colors.green[900]),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Browse',
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushRoute(
+                          AppRoute.routineSummary,
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Ink(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.orange[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.orange[200]!, width: 1.5),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.check_circle_outline, color: Colors.orange[900]),
+                            const SizedBox(height: 8),
+                            Text(
+                              'My Routine',
+                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
 
             if (_lastAddedExercise != null) ...[
               Container(

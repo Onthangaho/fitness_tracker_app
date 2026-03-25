@@ -4,7 +4,10 @@ import 'package:fitness_tracker_app/widgets/welcome_greeting.dart';
 import 'package:fitness_tracker_app/widgets/workouts_section_header.dart';
 import 'package:fitness_tracker_app/widgets/responsive_workouts_grid.dart';
 import 'package:fitness_tracker_app/app_router.dart';
+import 'package:fitness_tracker_app/providers/profile_provider.dart';
+import 'package:fitness_tracker_app/screens/settings_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -27,8 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   final Set<int> favoriteWorkouts = {};
-
-  String? username;
   Map<String, dynamic>? _lastAddedExercise;
 
   final Map<String, Color> _categoryThemeColors = {
@@ -99,12 +100,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String displayName = username ?? 'Guest User';
+    final profileProvider = context.watch<ProfileProvider>();
+    final trimmedName = profileProvider.name.trim();
+    final isGuest = trimmedName.isEmpty || trimmedName == 'Guest';
+    final greetingText = isGuest ? 'Welcome!' : 'Welcome back, $trimmedName!';
+    final hasGoal = profileProvider.weightGoal > 0;
 
     return Scaffold(
       appBar: FitnessAppBar(
         onProfileTap: () {
-          _showSnackBar('Profile feature coming soon!');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const SettingsProfileScreen(),
+            ),
+          );
         },
 
         onNotificationsTap: () {
@@ -119,7 +128,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            WelcomeGreeting(displayName: displayName),
+            WelcomeGreeting(greetingText: greetingText),
+            if (hasGoal) ...[
+              const SizedBox(height: 8),
+              Chip(
+                label: Text(
+                  'Goal: ${profileProvider.weightGoal.toStringAsFixed(1)} ${profileProvider.weightUnit}',
+                ),
+              ),
+            ],
             const SizedBox(height: 16),
 
             FeaturedWorkoutCard(

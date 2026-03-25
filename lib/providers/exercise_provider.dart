@@ -70,10 +70,10 @@ class ExerciseProvider extends ChangeNotifier {
     ),
   ];
 
-  // Private state
+  
   late final List<Exercise> _exercises = List.from(_defaultExercises);
 
-  // ==================== GETTERS ====================
+  
 
   /// Returns the list of all available exercises
   List<Exercise> get exercises => List.unmodifiable(_exercises);

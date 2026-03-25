@@ -29,8 +29,7 @@ class RoutineProvider extends ChangeNotifier {
     return _routine.any((exercise) => exercise.id == id);
   }
 
-  /// Returns a breakdown of exercises per muscle group
-  /// Example: {'Chest': 3, 'Back': 2, 'Legs': 1}
+  
   Map<String, int> get muscleGroupBreakdown {
     final breakdown = <String, int>{};
     for (final exercise in _routine) {
@@ -40,10 +39,7 @@ class RoutineProvider extends ChangeNotifier {
     return breakdown;
   }
 
-  // ==================== MUTATION METHODS ====================
-
-  /// Adds an exercise to the routine
-  /// If an exercise with the same ID already exists, does nothing
+  
   void addExercise(Exercise exercise) {
     if (!isInRoutine(exercise.id)) {
       _routine.add(exercise);
@@ -51,13 +47,13 @@ class RoutineProvider extends ChangeNotifier {
     }
   }
 
-  /// Removes an exercise from the routine by ID
+  
   void removeExercise(String id) {
     _routine.removeWhere((exercise) => exercise.id == id);
     notifyListeners();
   }
 
-  /// Clears all exercises from the routine
+
   void clearRoutine() {
     _routine.clear();
     notifyListeners();

@@ -34,7 +34,7 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Dynamic AppBar theming from passed `Color` and `IconData`
 	- End-to-end navigation flow: Dashboard → Exercise List → Exercise Detail
 
-- Assignment 2.3: State Management with Provider:
+- Assignment 2.2: State Management with Provider:
 	- Multi-provider architecture (ExerciseProvider + RoutineProvider)
 	- Browse Exercises screen with real-time routine status tracking
 	- Routine Summary screen with comprehensive statistics
@@ -43,11 +43,37 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 	- Confirmation dialogs for destructive actions (clear routine)
 	- Empty state handling with user guidance
 
+- Assignment 2.3: Local Data Persistence & User Settings:
+	- New `ProfileProvider` persists data with `shared_preferences`
+	- Distinct data layers:
+		- Profile data: name, age, weight goal
+		- Preferences: weight unit, rest timer, notifications
+	- Startup load with validation/defensive recovery:
+		- Rest timer clamped to 15–300 seconds
+		- Weight unit restricted to `kg` or `lbs`
+		- Age constrained to 0–120 on load
+		- Weight goal constrained to >= 0 on load
+	- New Settings & Profile screen with:
+		- Explicit save for name (no per-keystroke disk writes)
+		- Validated age and weight-goal fields
+		- Reactive goal unit suffix (`kg`/`lbs`)
+		- Segmented control for unit selection
+		- Rest timer slider that writes on `onChangeEnd`
+		- Notifications toggle
+	- Dashboard integration:
+		- Greeting uses `Welcome!` for guest/empty names
+		- `Welcome back, [Name]!` for saved profiles
+		- Goal chip shown when a goal is set
+	- Selective destructive actions with confirmations:
+		- `Reset Profile`: clears only profile keys
+		- `Reset Everything`: clears profile + preferences
+
 ## Tech Stack
 
 - **Framework**: Flutter
 - **Language**: Dart 3.10.4+
 - **State Management**: Provider 6.1.5+
+- **Local Persistence**: shared_preferences 2.5.3+
 - **UI Toolkit**: Material 3 (`useMaterial3: true`)
 
 ## Current Project Structure
@@ -60,6 +86,7 @@ lib/
 │   └── exercise_model.dart
 ├── providers/
 │   ├── exercise_provider.dart
+│   ├── profile_provider.dart
 │   └── routine_provider.dart
 ├── screens/
 │   ├── add_exercise_screen.dart
@@ -68,6 +95,7 @@ lib/
 │   ├── exercise_detail_screen.dart
 │   ├── exercise_list_screen.dart
 │   ├── home_screen.dart
+│   ├── settings_profile_screen.dart
 │   └── routine_summary_screen.dart
 └── widgets/
     ├── app_header.dart
@@ -93,11 +121,11 @@ lib/
 
 ## Assignment 2.3 Submission Files
 
-- `lib/providers/routine_provider.dart` (Core state management)
-- `lib/screens/exercise_browse_screen.dart` (Browse & add exercises)
-- `lib/screens/routine_summary_screen.dart` (View routine stats)
-- `lib/app_router.dart` (Updated with new routes)
-- `lib/main.dart` (MultiProvider setup)
+- `lib/providers/profile_provider.dart` (Profile + preferences state and persistence)
+- `lib/screens/settings_profile_screen.dart` (Settings & Profile UI)
+- `lib/screens/home_screen.dart` (Dashboard greeting/goal + settings navigation)
+- `lib/widgets/welcome_greeting.dart` (Updated greeting contract)
+- `lib/main.dart` (ProfileProvider added to MultiProvider)
 
 ## Getting Started
 
@@ -123,8 +151,8 @@ flutter run -d chrome
 
 ## Notes
 
-- Username currently defaults to `Guest User`.
-- Profile, notifications, and view-all actions currently show placeholder snackbars.
+- Profile defaults to guest mode with `Welcome!` until a name is saved.
+- Profile icon opens the Settings & Profile screen.
 - BMI Calculator intentionally uses custom `InkWell` interactions for assignment requirements.
 - Custom exercises are validated before being added to the workout list.
 

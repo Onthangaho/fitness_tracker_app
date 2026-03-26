@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'providers/routine_provider.dart';
 import 'providers/exercise_provider.dart';
+import 'providers/profile_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ExerciseProvider()),
         ChangeNotifierProvider(create: (_) => RoutineProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: MaterialApp(
         title: 'Fitness Tracker',

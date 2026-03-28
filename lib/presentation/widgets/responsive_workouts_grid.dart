@@ -1,4 +1,4 @@
-import 'package:fitness_tracker_app/widgets/workout_tile.dart';
+import './workout_tile.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveWorkoutsGrid extends StatelessWidget {
@@ -61,3 +61,4 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
     );
   }
 }
+

@@ -1,128 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../data/profile_repository.dart';
+import '../models/user_profile.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  static const String _profileNameKey = 'profile_name';
-  static const String _profileAgeKey = 'profile_age';
-  static const String _profileWeightGoalKey = 'profile_weight_goal';
-  static const String _prefWeightUnitKey = 'pref_weight_unit';
-  static const String _prefRestTimerKey = 'pref_rest_timer';
-  static const String _prefNotificationsKey = 'pref_notifications';
+  final ProfileRepository _repository;
+  
+  UserProfile _profile = UserProfile.defaults();
 
-  String _name = 'Guest';
-  int _age = 0;
-  double _weightGoal = 0.0;
-  String _weightUnit = 'kg';
-  int _restTimerSeconds = 60;
-  bool _notificationsEnabled = true;
-
-  ProfileProvider() {
-    _loadAll();
+  ProfileProvider(this._repository) {
+    _init();
   }
 
-  String get name => _name;
-  int get age => _age;
-  double get weightGoal => _weightGoal;
-  String get weightUnit => _weightUnit;
-  int get restTimerSeconds => _restTimerSeconds;
-  bool get notificationsEnabled => _notificationsEnabled;
-
-  Future<void> saveName(String name) async {
-    _name = name.trim().isEmpty ? 'Guest' : name.trim();
+  Future<void> _init() async {
+    _profile = await _repository.loadProfile();
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_profileNameKey, _name);
   }
 
-  Future<void> saveAge(int age) async {
-    _age = age;
+
+  UserProfile get profile => _profile;
+  
+  String get name => _profile.name;
+  int get age => _profile.age;
+  double get weightGoal => _profile.weightGoal;
+  String get weightUnit => _profile.weightUnit;
+  int get restTimerSeconds => _profile.restTimerSeconds;
+  bool get notificationsEnabled => _profile.notificationsEnabled;
+  
+  bool get isMetric => _profile.isMetric;
+
+  
+  Future<void> updateName(String name) async {
+    _profile = _profile.copyWith(name: name);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_profileAgeKey, _age);
+    await _repository.saveProfile(_profile);
   }
 
-  Future<void> saveWeightGoal(double weightGoal) async {
-    _weightGoal = weightGoal;
+  Future<void> updateAge(int age) async {
+    _profile = _profile.copyWith(age: age);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble(_profileWeightGoalKey, _weightGoal);
+    await _repository.saveProfile(_profile);
   }
 
-  Future<void> saveWeightUnit(String weightUnit) async {
-    _weightUnit = weightUnit == 'lbs' ? 'lbs' : 'kg';
+  Future<void> updateWeightGoal(double weightGoal) async {
+    _profile = _profile.copyWith(weightGoal: weightGoal);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_prefWeightUnitKey, _weightUnit);
+    await _repository.saveProfile(_profile);
   }
 
-  Future<void> saveRestTimerSeconds(int restTimerSeconds) async {
-    _restTimerSeconds = restTimerSeconds.clamp(15, 300);
+  Future<void> updateWeightUnit(String unit) async {
+    final validUnit = unit == 'lbs' ? 'lbs' : 'kg';
+    _profile = _profile.copyWith(weightUnit: validUnit);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_prefRestTimerKey, _restTimerSeconds);
+    await _repository.saveProfile(_profile);
   }
 
-  Future<void> saveNotificationsEnabled(bool enabled) async {
-    _notificationsEnabled = enabled;
+  Future<void> updateRestTimerSeconds(int seconds) async {
+    final validSeconds = seconds.clamp(15, 300);
+    _profile = _profile.copyWith(restTimerSeconds: validSeconds);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_prefNotificationsKey, _notificationsEnabled);
+    await _repository.saveProfile(_profile);
+  }
+
+  Future<void> updateNotificationsEnabled(bool enabled) async {
+    _profile = _profile.copyWith(notificationsEnabled: enabled);
+    notifyListeners();
+    await _repository.saveProfile(_profile);
   }
 
   Future<void> resetProfile() async {
-    _name = 'Guest';
-    _age = 0;
-    _weightGoal = 0.0;
+    _profile = UserProfile.defaults();
     notifyListeners();
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_profileNameKey);
-    await prefs.remove(_profileAgeKey);
-    await prefs.remove(_profileWeightGoalKey);
-  }
-
-  Future<void> resetEverything() async {
-    _name = 'Guest';
-    _age = 0;
-    _weightGoal = 0.0;
-    _weightUnit = 'kg';
-    _restTimerSeconds = 60;
-    _notificationsEnabled = true;
-    notifyListeners();
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-  }
-
-  Future<void> _loadAll() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final storedName = prefs.getString(_profileNameKey);
-    final storedAge = prefs.getInt(_profileAgeKey);
-    final storedWeightGoal = prefs.getDouble(_profileWeightGoalKey);
-    final storedWeightUnit = prefs.getString(_prefWeightUnitKey);
-    final storedRestTimer = prefs.getInt(_prefRestTimerKey);
-    final storedNotifications = prefs.getBool(_prefNotificationsKey);
-
-    _name = (storedName == null || storedName.trim().isEmpty)
-        ? 'Guest'
-        : storedName.trim();
-
-    final validAge = storedAge ?? 0;
-    _age = (validAge < 0 || validAge > 120) ? 0 : validAge;
-
-    final validWeightGoal = storedWeightGoal ?? 0.0;
-    _weightGoal = validWeightGoal < 0 ? 0.0 : validWeightGoal;
-
-    _weightUnit = (storedWeightUnit == 'kg' || storedWeightUnit == 'lbs')
-        ? storedWeightUnit!
-        : 'kg';
-
-    final validRestTimer = (storedRestTimer ?? 60).clamp(15, 300);
-    _restTimerSeconds = validRestTimer;
-
-    _notificationsEnabled = storedNotifications ?? true;
-
-    notifyListeners();
+    await _repository.clearProfile();
   }
 }

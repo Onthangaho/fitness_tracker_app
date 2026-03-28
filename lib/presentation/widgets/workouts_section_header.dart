@@ -24,3 +24,4 @@ class WorkoutsSectionHeader extends StatelessWidget {
     );
   }
 }
+

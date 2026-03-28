@@ -1,11 +1,11 @@
-import 'package:fitness_tracker_app/widgets/app_header.dart';
-import 'package:fitness_tracker_app/widgets/featured_workout_card.dart';
-import 'package:fitness_tracker_app/widgets/welcome_greeting.dart';
-import 'package:fitness_tracker_app/widgets/workouts_section_header.dart';
-import 'package:fitness_tracker_app/widgets/responsive_workouts_grid.dart';
-import 'package:fitness_tracker_app/app_router.dart';
-import 'package:fitness_tracker_app/providers/profile_provider.dart';
-import 'package:fitness_tracker_app/screens/settings_profile_screen.dart';
+import '../widgets/app_header.dart';
+import '../widgets/featured_workout_card.dart';
+import '../widgets/welcome_greeting.dart';
+import '../widgets/workouts_section_header.dart';
+import '../widgets/responsive_workouts_grid.dart';
+import '../app_router.dart';
+import '../../providers/profile_provider.dart';
+import './settings_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 class HomeScreen extends StatefulWidget {
@@ -59,13 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
- //this function will open the AddExerciseScreen and wait for the result when the user saves a new exercise. The result will be a Map containing the exercise details, which we will then add to our workouts list and update the UI accordingly.
   Future<void> _openAddExerciseForm() async {
-    //the result from the AddExerciseScreen will be a Map<String, dynamic> containing the exercise details
     final exerciseData = await Navigator.of(context).pushRoute<Map<String, dynamic>>(
       AppRoute.addExercise,
     );
-//if the user cancels the form, exerciseData will be null
     if (exerciseData == null) {
       return;
     }
@@ -151,7 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             const SizedBox(height: 24),
-            //the material widget with an InkWell allows us to create a tappable area that looks like a card. When the user taps on it, we navigate to the BMICalculatorScreen. The card has an icon, a title, and a forward arrow to indicate that it's clickable. 
             Material(
               color: Colors.transparent,
               child: InkWell(
@@ -189,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 12),
 
-            // Exercise Browse and Routine Summary Buttons
             Row(
               children: [
                 Expanded(
@@ -314,7 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 favoriteWorkouts: favoriteWorkouts,
                 onFavoriteToggle: _toggleFavoriteWorkout,
                 onWorkoutTap: (index) {
-                  //if the user taps on a workout card that is beyond the first 4 categories, we simply return and do nothing. This is because we only have defined navigation for the first 4 categories (Cardio, Strength Training, Yoga Flow, Flexibility). For any additional workouts that might be added dynamically, we currently do not have a specific screen to navigate to, so we prevent any action from occurring when they are tapped.
                   if (index >= 4) {
                     return;
                   }
@@ -322,7 +316,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   final categoryName = workouts[index]['name']!;
                   final color = _categoryThemeColors[categoryName] ??
                       Theme.of(context).colorScheme.primary;
-                  //when a workout card is tapped, we navigate to the ExerciseListScreen for that category. We pass the category name, theme color, and icon data as arguments to the screen so that it can display the appropriate exercises and styling based on the selected workout category. 
                   Navigator.of(context).pushRouteWithArgs(
                     AppRoute.exerciseList,
                     ExerciseListArgs(
@@ -346,3 +339,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

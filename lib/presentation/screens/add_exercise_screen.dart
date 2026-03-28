@@ -8,7 +8,6 @@ class AddExerciseScreen extends StatefulWidget {
 }
 
 class _AddExerciseScreenState extends State<AddExerciseScreen> {
-  // Form key to manage form state and validation
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _exerciseNameController;
@@ -52,7 +51,6 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
     _weightController.dispose();
     super.dispose();
   }
-// Recalculate volume preview whenever sets, reps, or weight input changes
   void _onVolumeInputChanged() {
     if (mounted) {
       setState(() {});
@@ -169,7 +167,6 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
 
     return 'Total Volume: $setsText × $repsText × $weightText = $resultText kg';
   }
- // Save the exercise data and return to previous screen
   void _saveExercise() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -310,3 +307,5 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
     );
   }
 }
+
+

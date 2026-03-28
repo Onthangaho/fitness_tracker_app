@@ -1,4 +1,4 @@
-import 'package:fitness_tracker_app/providers/profile_provider.dart';
+import '../../providers/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +49,7 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
   }
 
   Future<void> _saveName(ProfileProvider provider) async {
-    await provider.saveName(_nameController.text);
+    await provider.updateName(_nameController.text);
     if (!mounted) {
       return;
     }
@@ -68,8 +68,8 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
     final parsedWeightGoal =
         double.tryParse(_weightGoalController.text.trim()) ?? 0.0;
 
-    await provider.saveAge(parsedAge);
-    await provider.saveWeightGoal(parsedWeightGoal);
+    await provider.updateAge(parsedAge);
+    await provider.updateWeightGoal(parsedWeightGoal);
 
     if (!mounted) {
       return;
@@ -160,7 +160,7 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
       return;
     }
 
-    await provider.resetEverything();
+    await provider.resetProfile();
     _nameController.text = '';
     _ageController.text = '';
     _weightGoalController.text = '';
@@ -292,7 +292,7 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
                 ],
                 selected: {profileProvider.weightUnit},
                 onSelectionChanged: (selected) {
-                  profileProvider.saveWeightUnit(selected.first);
+                  profileProvider.updateWeightUnit(selected.first);
                 },
               ),
               const SizedBox(height: 20),
@@ -314,7 +314,7 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
                 },
                 onChangeEnd: (value) async {
                   final rounded = value.round();
-                  await profileProvider.saveRestTimerSeconds(rounded);
+                  await profileProvider.updateRestTimerSeconds(rounded);
                   if (!mounted) {
                     return;
                   }
@@ -330,7 +330,7 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
                 title: const Text('Notifications enabled'),
                 value: profileProvider.notificationsEnabled,
                 onChanged: (value) {
-                  profileProvider.saveNotificationsEnabled(value);
+                  profileProvider.updateNotificationsEnabled(value);
                 },
               ),
               const SizedBox(height: 24),
@@ -360,3 +360,4 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
     );
   }
 }
+

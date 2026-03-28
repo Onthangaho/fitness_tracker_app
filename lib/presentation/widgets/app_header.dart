@@ -12,7 +12,6 @@ class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.onNotificationsTap,
     this.notificationCount = '3',
   });
-//the preferredSize getter is required by PreferredSizeWidget to specify the height of the AppBar
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
@@ -44,3 +43,4 @@ class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
+

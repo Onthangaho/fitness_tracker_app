@@ -31,3 +31,4 @@ class NotificationBadge extends StatelessWidget {
     );
   }
 }
+

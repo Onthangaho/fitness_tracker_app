@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/routine_provider.dart';
+import '../../providers/routine_provider.dart';
 import 'exercise_browse_screen.dart';
 
 class RoutineSummaryScreen extends StatelessWidget {
@@ -318,3 +318,5 @@ class _ExerciseItem extends StatelessWidget {
     );
   }
 }
+
+

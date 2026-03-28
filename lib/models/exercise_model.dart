@@ -6,7 +6,7 @@ class Exercise {
   final int reps;
   final double weight;
 
-  Exercise({
+  const Exercise({
     required this.id,
     required this.name,
     required this.muscleGroup,
@@ -15,8 +15,47 @@ class Exercise {
     required this.weight,
   });
 
-  /// Computed property: total volume (sets × reps × weight)
   double get volume => sets * reps * weight;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'muscleGroup': muscleGroup,
+      'sets': sets,
+      'reps': reps,
+      'weight': weight,
+    };
+  }
+
+  factory Exercise.fromJson(Map<String, dynamic> json) {
+    return Exercise(
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? 'Unknown',
+      muscleGroup: json['muscleGroup'] as String? ?? 'General',
+      sets: json['sets'] as int? ?? 0,
+      reps: json['reps'] as int? ?? 0,
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
+  Exercise copyWith({
+    String? id,
+    String? name,
+    String? muscleGroup,
+    int? sets,
+    int? reps,
+    double? weight,
+  }) {
+    return Exercise(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      muscleGroup: muscleGroup ?? this.muscleGroup,
+      sets: sets ?? this.sets,
+      reps: reps ?? this.reps,
+      weight: weight ?? this.weight,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -30,5 +69,5 @@ class Exercise {
 
   @override
   String toString() =>
-      'Exercise(id: $id, name: $name, muscleGroup: $muscleGroup, sets: $sets, reps: $reps, weight: $weight)';
+      'Exercise(id: $id, name: $name, muscleGroup: $muscleGroup, sets: $sets, reps: $reps, weight: $weight, volume: $volume)';
 }

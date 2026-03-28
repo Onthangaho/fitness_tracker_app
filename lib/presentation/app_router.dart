@@ -1,10 +1,10 @@
-import 'package:fitness_tracker_app/screens/exercise_detail_screen.dart';
-import 'package:fitness_tracker_app/screens/exercise_list_screen.dart';
-import 'package:fitness_tracker_app/screens/add_exercise_screen.dart';
-import 'package:fitness_tracker_app/screens/bmi_calculator_screen.dart';
-import 'package:fitness_tracker_app/screens/home_screen.dart';
-import 'package:fitness_tracker_app/screens/exercise_browse_screen.dart';
-import 'package:fitness_tracker_app/screens/routine_summary_screen.dart';
+import './screens/exercise_detail_screen.dart';
+import './screens/exercise_list_screen.dart';
+import './screens/add_exercise_screen.dart';
+import './screens/bmi_calculator_screen.dart';
+import './screens/home_screen.dart';
+import './screens/exercise_browse_screen.dart';
+import './screens/routine_summary_screen.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseListArgs {
@@ -18,7 +18,6 @@ class ExerciseListArgs {
     required this.iconData,
   });
 }
-// The ExerciseDetailArgs class is a simple data class that holds the details of an exercise. It includes the exercise name, muscle group, number of sets, reps, and weight. This class is used to pass exercise details as arguments when navigating to the ExerciseDetailScreen.
 class ExerciseDetailArgs {
   final String exerciseName;
   final String muscleGroup;

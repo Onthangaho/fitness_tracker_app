@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fitness_tracker_app/widgets/input_card.dart';
-import 'package:fitness_tracker_app/widgets/result_display_box.dart';
-import 'package:fitness_tracker_app/widgets/custom_inkwell_button.dart';
+import '../widgets/input_card.dart';
+import '../widgets/result_display_box.dart';
+import '../widgets/custom_inkwell_button.dart';
 
 class BMICalculatorScreen extends StatefulWidget {
   const BMICalculatorScreen({super.key});
@@ -189,3 +189,5 @@ class _BMICalculatorScreenState extends State<BMICalculatorScreen> {
     );
   }
 }
+
+

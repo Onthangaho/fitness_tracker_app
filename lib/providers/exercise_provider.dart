@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/exercise_model.dart';
 
-/// Provider that manages the list of available exercises
 class ExerciseProvider extends ChangeNotifier {
   static final List<Exercise> _defaultExercises = [
     Exercise(
@@ -75,9 +74,7 @@ class ExerciseProvider extends ChangeNotifier {
 
   
 
-  /// Returns the list of all available exercises
   List<Exercise> get exercises => List.unmodifiable(_exercises);
 
-  /// Returns the number of available exercises
   int get exerciseCount => _exercises.length;
 }

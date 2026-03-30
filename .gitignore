@@ -90,3 +90,9 @@ linux/build/
 # -------------------------------
 web/.dart_tool/
 web/build/
+
+# -------------------------------
+# Local secret/config files
+# -------------------------------
+.env
+.env.*

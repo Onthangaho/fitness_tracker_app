@@ -8,12 +8,14 @@ import '../../providers/profile_provider.dart';
 import './settings_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> workouts = [
     {'name': 'Cardio', 'status': 'Completed'},
@@ -43,7 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
+        backgroundColor:
+            backgroundColor ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }
@@ -52,26 +55,31 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       if (favoriteWorkouts.contains(index)) {
         favoriteWorkouts.remove(index);
-        _showSnackBar('Removed from favorites', backgroundColor: Colors.deepOrange);
+        _showSnackBar(
+          'Removed from favorites',
+          backgroundColor: Colors.deepOrange,
+        );
       } else {
         favoriteWorkouts.add(index);
         _showSnackBar('Added to favorites', backgroundColor: Colors.deepOrange);
       }
     });
   }
+
   Future<void> _openAddExerciseForm() async {
-    final exerciseData = await Navigator.of(context).pushRoute<Map<String, dynamic>>(
-      AppRoute.addExercise,
-    );
+    final exerciseData = await Navigator.of(
+      context,
+    ).pushRoute<Map<String, dynamic>>(AppRoute.addExercise);
     if (exerciseData == null) {
       return;
     }
-     
+
     final String name = (exerciseData['name'] as String?) ?? 'Custom Exercise';
     final int sets = (exerciseData['sets'] as int?) ?? 0;
     final int reps = (exerciseData['reps'] as int?) ?? 0;
     final double weight = (exerciseData['weight'] as double?) ?? 0;
-    final String muscleGroup = (exerciseData['muscleGroup'] as String?) ?? 'General';
+    final String muscleGroup =
+        (exerciseData['muscleGroup'] as String?) ?? 'General';
 
     final String weightText = weight % 1 == 0
         ? weight.toStringAsFixed(0)
@@ -92,7 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
       };
     });
 
-    _showSnackBar('$name saved successfully', backgroundColor: Colors.green[700]);
+    _showSnackBar(
+      '$name saved successfully',
+      backgroundColor: Colors.green[700],
+    );
   }
 
   @override
@@ -107,9 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: FitnessAppBar(
         onProfileTap: () {
           Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => const SettingsProfileScreen(),
-            ),
+            MaterialPageRoute(builder: (_) => const SettingsProfileScreen()),
           );
         },
 
@@ -138,7 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
             FeaturedWorkoutCard(
               title: 'Featured Workout of the Day',
-              description: 'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
+              description:
+                  'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
               onStartPressed: () {
                 _showSnackBar(
                   'Starting Featured Workout!....',
@@ -152,9 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).pushRoute(
-                    AppRoute.bmiCalculator,
-                  );
+                  Navigator.of(context).pushRoute(AppRoute.bmiCalculator);
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Ink(
@@ -171,12 +179,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: Text(
                           'BMI Calculator',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Icon(Icons.arrow_forward_ios, size: 16, color: Colors.blue[700]),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Colors.blue[700],
+                      ),
                     ],
                   ),
                 ),
@@ -192,9 +203,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushRoute(
-                          AppRoute.exerciseBrowse,
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushRoute(AppRoute.exerciseBrowse);
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Ink(
@@ -202,17 +213,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           color: Colors.green[50],
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green[200]!, width: 1.5),
+                          border: Border.all(
+                            color: Colors.green[200]!,
+                            width: 1.5,
+                          ),
                         ),
                         child: Column(
                           children: [
-                            Icon(Icons.shopping_cart_outlined, color: Colors.green[900]),
+                            Icon(
+                              Icons.shopping_cart_outlined,
+                              color: Colors.green[900],
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               'Browse',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -227,9 +243,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        Navigator.of(context).pushRoute(
-                          AppRoute.routineSummary,
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushRoute(AppRoute.exerciseSearch);
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Ink(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.purple[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.purple[200]!,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Icon(Icons.public, color: Colors.purple[900]),
+                            const SizedBox(height: 8),
+                            Text(
+                              'API Search',
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(
+                          context,
+                        ).pushRoute(AppRoute.routineSummary);
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Ink(
@@ -237,17 +290,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           color: Colors.orange[50],
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.orange[200]!, width: 1.5),
+                          border: Border.all(
+                            color: Colors.orange[200]!,
+                            width: 1.5,
+                          ),
                         ),
                         child: Column(
                           children: [
-                            Icon(Icons.check_circle_outline, color: Colors.orange[900]),
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.orange[900],
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               'My Routine',
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -276,8 +334,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       'Last Added Exercise',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Text(
@@ -314,7 +372,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
 
                   final categoryName = workouts[index]['name']!;
-                  final color = _categoryThemeColors[categoryName] ??
+                  final color =
+                      _categoryThemeColors[categoryName] ??
                       Theme.of(context).colorScheme.primary;
                   Navigator.of(context).pushRouteWithArgs(
                     AppRoute.exerciseList,
@@ -339,5 +398,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

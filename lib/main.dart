@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 
 import 'data/profile_repository.dart';
 import 'data/routine_repository.dart';
+import 'data/exercise_api_repository.dart';
 
 import 'providers/routine_provider.dart';
 import 'providers/exercise_provider.dart';
 import 'providers/profile_provider.dart';
+import 'domain/exercise_search_provider.dart';
 
 import 'presentation/screens/home_screen.dart';
 
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileRepository = ProfileRepository();
     final routineRepository = RoutineRepository();
+    final exerciseApiRepository = ExerciseApiRepository();
 
     return MultiProvider(
       providers: [
@@ -30,8 +33,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => RoutineProvider(routineRepository),
         ),
+        ChangeNotifierProvider(create: (_) => ExerciseProvider()),
         ChangeNotifierProvider(
-          create: (_) => ExerciseProvider(),
+          create: (_) => ExerciseSearchProvider(exerciseApiRepository),
         ),
       ],
       child: MaterialApp(
@@ -46,4 +50,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

@@ -74,7 +74,27 @@ Fitness Tracker is a beginner-friendly Flutter app with a clean workout dashboar
 - **Language**: Dart 3.10.4+
 - **State Management**: Provider 6.1.5+
 - **Local Persistence**: shared_preferences 2.5.3+
+- **Networking**: dio 5.9.2+
 - **UI Toolkit**: Material 3 (`useMaterial3: true`)
+
+## Assignment 3.1: Networking with Dio & External APIs
+
+- API Ninjas Exercise Search screen added with multi-filter support:
+	- muscle
+	- difficulty
+	- type
+	- name (optional)
+- Full loading lifecycle in provider:
+	- loading
+	- success
+	- error
+	- retry
+- Robust error handling for:
+	- timeout
+	- invalid API key (401)
+	- rate limiting (429)
+	- server status errors
+	- no connection
 
 ## Current Project Structure
 
@@ -138,8 +158,22 @@ lib/
 
 ```bash
 flutter pub get
-flutter run
+flutter run --dart-define=API_NINJAS_KEY=YOUR_API_NINJAS_KEY
 ```
+
+### API Key Setup (Important)
+
+This project does not hardcode API keys in source code.
+
+Pass your API key at runtime using `--dart-define`:
+
+```bash
+flutter run --dart-define=API_NINJAS_KEY=YOUR_API_NINJAS_KEY
+```
+
+If you use a launch profile, add this define to your run configuration.
+
+If no key is provided, the app shows a clear error message in the search flow.
 
 ## Useful Commands
 

@@ -3,6 +3,7 @@ import './screens/exercise_list_screen.dart';
 import './screens/add_exercise_screen.dart';
 import './screens/bmi_calculator_screen.dart';
 import './screens/home_screen.dart';
+import './screens/exercise_search_screen.dart';
 import './screens/exercise_browse_screen.dart';
 import './screens/routine_summary_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class ExerciseListArgs {
     required this.iconData,
   });
 }
+
 class ExerciseDetailArgs {
   final String exerciseName;
   final String muscleGroup;
@@ -40,6 +42,7 @@ enum AppRoute<T> {
   exerciseDetail<ExerciseDetailArgs>(),
   bmiCalculator<void>(),
   addExercise<void>(),
+  exerciseSearch<void>(),
   exerciseBrowse<void>(),
   routineSummary<void>();
 
@@ -82,6 +85,11 @@ enum AppRoute<T> {
       case AppRoute.addExercise:
         return MaterialPageRoute<R>(
           builder: (_) => const AddExerciseScreen(),
+          settings: RouteSettings(name: name),
+        );
+      case AppRoute.exerciseSearch:
+        return MaterialPageRoute<R>(
+          builder: (_) => const ExerciseSearchScreen(),
           settings: RouteSettings(name: name),
         );
       case AppRoute.exerciseBrowse:

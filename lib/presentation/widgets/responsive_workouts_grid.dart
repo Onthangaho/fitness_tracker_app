@@ -31,6 +31,8 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
         }
 
         return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: workouts.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
@@ -61,4 +63,3 @@ class ResponsiveWorkoutsGrid extends StatelessWidget {
     );
   }
 }
-

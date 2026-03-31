@@ -129,239 +129,277 @@ class _HomeScreenState extends State<HomeScreen> {
         notificationCount: '3',
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            WelcomeGreeting(greetingText: greetingText),
-            if (hasGoal) ...[
-              const SizedBox(height: 8),
-              Chip(
-                label: Text(
-                  'Goal: ${profileProvider.weightGoal.toStringAsFixed(1)} ${profileProvider.weightUnit}',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              WelcomeGreeting(greetingText: greetingText),
+              if (hasGoal) ...[
+                const SizedBox(height: 8),
+                Chip(
+                  label: Text(
+                    'Goal: ${profileProvider.weightGoal.toStringAsFixed(1)} ${profileProvider.weightUnit}',
+                  ),
+                ),
+              ],
+              const SizedBox(height: 16),
+
+              FeaturedWorkoutCard(
+                title: 'Featured Workout of the Day',
+                description:
+                    'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
+                onStartPressed: () {
+                  _showSnackBar(
+                    'Starting Featured Workout!....',
+                    backgroundColor: Colors.deepOrange,
+                  );
+                },
+              ),
+
+              const SizedBox(height: 24),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushRoute(AppRoute.bmiCalculator);
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Ink(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blue[200]!, width: 1.5),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.calculate, color: Colors.blue[900]),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'BMI Calculator',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Colors.blue[700],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ],
-            const SizedBox(height: 16),
 
-            FeaturedWorkoutCard(
-              title: 'Featured Workout of the Day',
-              description:
-                  'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
-              onStartPressed: () {
-                _showSnackBar(
-                  'Starting Featured Workout!....',
-                  backgroundColor: Colors.deepOrange,
-                );
-              },
-            ),
+              const SizedBox(height: 12),
 
-            const SizedBox(height: 24),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushRoute(AppRoute.bmiCalculator);
-                },
-                borderRadius: BorderRadius.circular(12),
-                child: Ink(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.blue[200]!, width: 1.5),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushRoute(AppRoute.outdoorWorkout);
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Ink(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.teal[200]!, width: 1.5),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.route, color: Colors.teal[900]),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'Outdoor Workout (GPS)',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          color: Colors.teal[700],
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.calculate, color: Colors.blue[900]),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'BMI Calculator',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(
+                            context,
+                          ).pushRoute(AppRoute.exerciseBrowse);
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Ink(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green[50],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.green[200]!,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.shopping_cart_outlined,
+                                color: Colors.green[900],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Browse',
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Colors.blue[700],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(
+                            context,
+                          ).pushRoute(AppRoute.exerciseSearch);
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Ink(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.purple[50],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.purple[200]!,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(Icons.public, color: Colors.purple[900]),
+                              const SizedBox(height: 8),
+                              Text(
+                                'API Search',
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(
+                            context,
+                          ).pushRoute(AppRoute.routineSummary);
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Ink(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.orange[50],
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.orange[200]!,
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.check_circle_outline,
+                                color: Colors.orange[900],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'My Routine',
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              if (_lastAddedExercise != null) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Last Added Exercise',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${_lastAddedExercise!['name']} • ${_lastAddedExercise!['muscleGroup']}',
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${_lastAddedExercise!['sets']} sets × ${_lastAddedExercise!['reps']} reps × ${_lastAddedExercise!['weight']}kg',
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            Row(
-              children: [
-                Expanded(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(
-                          context,
-                        ).pushRoute(AppRoute.exerciseBrowse);
-                      },
-                      borderRadius: BorderRadius.circular(12),
-                      child: Ink(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.green[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.green[200]!,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.shopping_cart_outlined,
-                              color: Colors.green[900],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Browse',
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(
-                          context,
-                        ).pushRoute(AppRoute.exerciseSearch);
-                      },
-                      borderRadius: BorderRadius.circular(12),
-                      child: Ink(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.purple[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.purple[200]!,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.public, color: Colors.purple[900]),
-                            const SizedBox(height: 8),
-                            Text(
-                              'API Search',
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(
-                          context,
-                        ).pushRoute(AppRoute.routineSummary);
-                      },
-                      borderRadius: BorderRadius.circular(12),
-                      child: Ink(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.orange[50],
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.orange[200]!,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.check_circle_outline,
-                              color: Colors.orange[900],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'My Routine',
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 16),
               ],
-            ),
 
-            if (_lastAddedExercise != null) ...[
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outlineVariant,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Last Added Exercise',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${_lastAddedExercise!['name']} • ${_lastAddedExercise!['muscleGroup']}',
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${_lastAddedExercise!['sets']} sets × ${_lastAddedExercise!['reps']} reps × ${_lastAddedExercise!['weight']}kg',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+              WorkoutsSectionHeader(
+                onViewAllPressed: () {
+                  _showSnackBar('View All Workouts feature coming soon!');
+                },
               ),
-              const SizedBox(height: 16),
-            ],
 
-            WorkoutsSectionHeader(
-              onViewAllPressed: () {
-                _showSnackBar('View All Workouts feature coming soon!');
-              },
-            ),
+              const SizedBox(height: 8),
 
-            const SizedBox(height: 8),
-
-            Expanded(
-              child: ResponsiveWorkoutsGrid(
+              ResponsiveWorkoutsGrid(
                 workouts: workouts,
                 workoutIcons: workoutIcons,
                 favoriteWorkouts: favoriteWorkouts,
@@ -385,8 +423,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 

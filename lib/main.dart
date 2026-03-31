@@ -9,6 +9,8 @@ import 'providers/routine_provider.dart';
 import 'providers/exercise_provider.dart';
 import 'providers/profile_provider.dart';
 import 'domain/exercise_search_provider.dart';
+import 'domain/workout_tracking_provider.dart';
+import 'data/location_service.dart';
 
 import 'presentation/screens/home_screen.dart';
 
@@ -36,6 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ExerciseProvider()),
         ChangeNotifierProvider(
           create: (_) => ExerciseSearchProvider(exerciseApiRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => WorkoutTrackingProvider(LocationService()),
         ),
       ],
       child: MaterialApp(

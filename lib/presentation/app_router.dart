@@ -6,6 +6,7 @@ import './screens/home_screen.dart';
 import './screens/exercise_search_screen.dart';
 import './screens/exercise_browse_screen.dart';
 import './screens/routine_summary_screen.dart';
+import './screens/outdoor_workout_screen.dart';
 import 'package:flutter/material.dart';
 
 class ExerciseListArgs {
@@ -44,7 +45,8 @@ enum AppRoute<T> {
   addExercise<void>(),
   exerciseSearch<void>(),
   exerciseBrowse<void>(),
-  routineSummary<void>();
+  routineSummary<void>(),
+  outdoorWorkout<void>();
 
   const AppRoute();
 
@@ -100,6 +102,11 @@ enum AppRoute<T> {
       case AppRoute.routineSummary:
         return MaterialPageRoute<R>(
           builder: (_) => const RoutineSummaryScreen(),
+          settings: RouteSettings(name: name),
+        );
+      case AppRoute.outdoorWorkout:
+        return MaterialPageRoute<R>(
+          builder: (_) => const OutdoorWorkoutScreen(),
           settings: RouteSettings(name: name),
         );
     }

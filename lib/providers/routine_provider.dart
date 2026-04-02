@@ -1,20 +1,34 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import '../data/auth_service.dart';
 import '../data/routine_repository.dart';
 import '../models/exercise_model.dart';
 
 class RoutineProvider extends ChangeNotifier {
   final RoutineRepository _repository;
-  
-  final List<Exercise> _routine = [];
+  final AuthService _authService;
 
-  RoutineProvider(this._repository) {
-    _init();
+  final List<Exercise> _routine = [];
+  StreamSubscription<Object?>? _authSubscription;
+  String? _activeUserId;
+
+  RoutineProvider(this._repository, this._authService) {
+    _initForCurrentUser();
+    _authSubscription = _authService.authStateChanges.listen((_) {
+      _initForCurrentUser();
+    });
   }
 
-  Future<void> _init() async {
-    final loadedRoutine = await _repository.loadRoutine();
+  Future<void> _initForCurrentUser() async {
+    final userId = _authService.currentUser?.uid;
+    _activeUserId = userId;
+
     _routine.clear();
-    _routine.addAll(loadedRoutine);
+    if (userId != null) {
+      final loadedRoutine = await _repository.loadRoutine(userId);
+      _routine.addAll(loadedRoutine);
+    }
     notifyListeners();
   }
 
@@ -49,19 +63,31 @@ class RoutineProvider extends ChangeNotifier {
     if (!isInRoutine(exercise.id)) {
       _routine.add(exercise);
       notifyListeners();
-      await _repository.saveRoutine(_routine);
+      if (_activeUserId != null) {
+        await _repository.saveRoutine(_activeUserId!, _routine);
+      }
     }
   }
 
   Future<void> removeExercise(String id) async {
     _routine.removeWhere((exercise) => exercise.id == id);
     notifyListeners();
-    await _repository.saveRoutine(_routine);
+    if (_activeUserId != null) {
+      await _repository.saveRoutine(_activeUserId!, _routine);
+    }
   }
 
   Future<void> clearRoutine() async {
     _routine.clear();
     notifyListeners();
-    await _repository.saveRoutine(_routine);
+    if (_activeUserId != null) {
+      await _repository.saveRoutine(_activeUserId!, _routine);
+    }
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 }

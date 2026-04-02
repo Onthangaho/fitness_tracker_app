@@ -4,6 +4,7 @@ import '../widgets/welcome_greeting.dart';
 import '../widgets/workouts_section_header.dart';
 import '../widgets/responsive_workouts_grid.dart';
 import '../app_router.dart';
+import '../../domain/auth_provider.dart';
 import '../../providers/profile_provider.dart';
 import './settings_profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,37 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _confirmSignOut() async {
+    final shouldSignOut = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Sign Out?'),
+          content: const Text(
+            'You will be logged out and sent to the landing page.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: const Text('Sign Out'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldSignOut != true || !mounted) {
+      return;
+    }
+
+    await context.read<AuthProvider>().logout();
+  }
+
   Future<void> _openAddExerciseForm() async {
     final exerciseData = await Navigator.of(
       context,
@@ -106,12 +138,50 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _metricTile({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.32)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: color),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: const TextStyle(fontSize: 12)),
+                Text(
+                  value,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
-    final trimmedName = profileProvider.name.trim();
-    final isGuest = trimmedName.isEmpty || trimmedName == 'Guest';
-    final greetingText = isGuest ? 'Welcome!' : 'Welcome back, $trimmedName!';
+    final authProvider = context.watch<AuthProvider>();
+    final userEmail = authProvider.userEmail;
+    final emailPrefix = userEmail == null
+      ? ''
+      : userEmail.split('@').first.trim();
+    final greetingText =
+      emailPrefix.isEmpty ? 'Welcome!' : 'Welcome, $emailPrefix!';
     final hasGoal = profileProvider.weightGoal > 0;
 
     return Scaffold(
@@ -121,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(builder: (_) => const SettingsProfileScreen()),
           );
         },
+        onLogoutTap: _confirmSignOut,
 
         onNotificationsTap: () {
           _showSnackBar('Notifications feature coming soon!');
@@ -129,37 +200,68 @@ class _HomeScreenState extends State<HomeScreen> {
         notificationCount: '3',
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WelcomeGreeting(greetingText: greetingText),
-              if (hasGoal) ...[
-                const SizedBox(height: 8),
-                Chip(
-                  label: Text(
-                    'Goal: ${profileProvider.weightGoal.toStringAsFixed(1)} ${profileProvider.weightUnit}',
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFFFF8F2), Color(0xFFFFFFFF)],
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                WelcomeGreeting(greetingText: greetingText),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _metricTile(
+                        icon: Icons.flag_outlined,
+                        label: 'Goal',
+                        value: hasGoal
+                            ? '${profileProvider.weightGoal.toStringAsFixed(1)} ${profileProvider.weightUnit}'
+                            : 'Not set',
+                        color: Colors.deepOrange,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _metricTile(
+                        icon: Icons.favorite_border,
+                        label: 'Favorites',
+                        value: favoriteWorkouts.length.toString(),
+                        color: Colors.pink,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                FeaturedWorkoutCard(
+                  title: 'Featured Workout of the Day',
+                  description:
+                      'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
+                  onStartPressed: () {
+                    _showSnackBar(
+                      'Starting Featured Workout!....',
+                      backgroundColor: Colors.deepOrange,
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 24),
+                Text(
+                  'Quick Actions',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              ],
-              const SizedBox(height: 16),
-
-              FeaturedWorkoutCard(
-                title: 'Featured Workout of the Day',
-                description:
-                    'High-Intensity Interval Training (HIIT) - Burn calories - 20 mins',
-                onStartPressed: () {
-                  _showSnackBar(
-                    'Starting Featured Workout!....',
-                    backgroundColor: Colors.deepOrange,
-                  );
-                },
-              ),
-
-              const SizedBox(height: 24),
-              Material(
+                const SizedBox(height: 8),
+                Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
@@ -193,11 +295,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-              ),
+                ),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-              Material(
+                Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
@@ -231,11 +333,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-              ),
+                ),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-              Row(
+                Row(
                 children: [
                   Expanded(
                     child: Material(
@@ -354,10 +456,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
-              ),
+                ),
 
-              if (_lastAddedExercise != null) ...[
-                Container(
+                if (_lastAddedExercise != null) ...[
+                  Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
@@ -387,43 +489,44 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
+                WorkoutsSectionHeader(
+                  onViewAllPressed: () {
+                    _showSnackBar('View All Workouts feature coming soon!');
+                  },
                 ),
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 8),
+
+                ResponsiveWorkoutsGrid(
+                  workouts: workouts,
+                  workoutIcons: workoutIcons,
+                  favoriteWorkouts: favoriteWorkouts,
+                  onFavoriteToggle: _toggleFavoriteWorkout,
+                  onWorkoutTap: (index) {
+                    if (index >= 4) {
+                      return;
+                    }
+
+                    final categoryName = workouts[index]['name']!;
+                    final color =
+                        _categoryThemeColors[categoryName] ??
+                        Theme.of(context).colorScheme.primary;
+                    Navigator.of(context).pushRouteWithArgs(
+                      AppRoute.exerciseList,
+                      ExerciseListArgs(
+                        categoryName: categoryName,
+                        themeColor: color,
+                        iconData: workoutIcons[index],
+                      ),
+                    );
+                  },
+                ),
               ],
-
-              WorkoutsSectionHeader(
-                onViewAllPressed: () {
-                  _showSnackBar('View All Workouts feature coming soon!');
-                },
-              ),
-
-              const SizedBox(height: 8),
-
-              ResponsiveWorkoutsGrid(
-                workouts: workouts,
-                workoutIcons: workoutIcons,
-                favoriteWorkouts: favoriteWorkouts,
-                onFavoriteToggle: _toggleFavoriteWorkout,
-                onWorkoutTap: (index) {
-                  if (index >= 4) {
-                    return;
-                  }
-
-                  final categoryName = workouts[index]['name']!;
-                  final color =
-                      _categoryThemeColors[categoryName] ??
-                      Theme.of(context).colorScheme.primary;
-                  Navigator.of(context).pushRouteWithArgs(
-                    AppRoute.exerciseList,
-                    ExerciseListArgs(
-                      categoryName: categoryName,
-                      themeColor: color,
-                      iconData: workoutIcons[index],
-                    ),
-                  );
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),

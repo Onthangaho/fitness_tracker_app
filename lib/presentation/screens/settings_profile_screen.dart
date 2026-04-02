@@ -1,3 +1,4 @@
+import '../../domain/auth_provider.dart';
 import '../../providers/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -176,9 +177,58 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
     );
   }
 
+  Future<void> _confirmSignOut(AuthProvider authProvider) async {
+    final shouldSignOut = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Sign Out?'),
+          content: const Text(
+            'You will be returned to the login screen and need to sign in again.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: Colors.red),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: const Text('Sign Out'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldSignOut != true) {
+      return;
+    }
+
+    await authProvider.logout();
+    if (!mounted) {
+      return;
+    }
+    Navigator.of(context).pop();
+  }
+
+  String _formatLastSignIn(DateTime? timestamp) {
+    if (timestamp == null) {
+      return 'No sign-in data available';
+    }
+
+    final local = timestamp.toLocal();
+    final month = local.month.toString().padLeft(2, '0');
+    final day = local.day.toString().padLeft(2, '0');
+    final hour = local.hour.toString().padLeft(2, '0');
+    final minute = local.minute.toString().padLeft(2, '0');
+    return '${local.year}-$month-$day $hour:$minute';
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileProvider = context.watch<ProfileProvider>();
+    final authProvider = context.watch<AuthProvider>();
     final restTimerValue = _isEditingRestTimer
         ? (_restTimerDraft ?? profileProvider.restTimerSeconds)
         : profileProvider.restTimerSeconds;
@@ -270,6 +320,51 @@ class _SettingsProfileScreenState extends State<SettingsProfileScreen> {
                   onPressed: () => _saveAgeAndWeightGoal(profileProvider),
                   icon: const Icon(Icons.check),
                   label: const Text('Save Profile Values'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Account',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Signed in as',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(authProvider.userEmail ?? 'Unknown user'),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Last signed in: ${_formatLastSignIn(authProvider.lastSignInTime)}',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: authProvider.isLoading
+                      ? null
+                      : () => _confirmSignOut(authProvider),
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Sign Out'),
                 ),
               ),
               const SizedBox(height: 24),

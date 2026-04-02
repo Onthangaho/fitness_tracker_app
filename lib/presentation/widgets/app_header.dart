@@ -4,12 +4,14 @@ import 'notification_badge.dart';
 class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onProfileTap;
   final VoidCallback onNotificationsTap;
+  final VoidCallback? onLogoutTap;
   final String notificationCount;
 
   const FitnessAppBar({
     super.key,
     required this.onProfileTap,
     required this.onNotificationsTap,
+    this.onLogoutTap,
     this.notificationCount = '3',
   });
   @override
@@ -39,6 +41,12 @@ class FitnessAppBar extends StatelessWidget implements PreferredSizeWidget {
             NotificationBadge(count: notificationCount),
           ],
         ),
+        if (onLogoutTap != null)
+          IconButton(
+            onPressed: onLogoutTap,
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign out',
+          ),
       ],
     );
   }

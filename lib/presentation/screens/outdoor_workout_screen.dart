@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/notification_service.dart';
 import '../../domain/workout_tracking_provider.dart';
 
 class OutdoorWorkoutScreen extends StatelessWidget {
@@ -72,18 +73,55 @@ class _IdlePhase extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Icon(Icons.run_circle_outlined, size: 100),
+            Icon(_workoutIcon(provider.workoutType), size: 100),
             const SizedBox(height: 16),
             Text(
-              'Track your outdoor run with GPS',
+              'Track your ${provider.workoutTypeLabel.toLowerCase()} with GPS',
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            SegmentedButton<OutdoorWorkoutType>(
+              segments: const [
+                ButtonSegment(
+                  value: OutdoorWorkoutType.walking,
+                  icon: Icon(Icons.directions_walk),
+                  label: Text('Walking'),
+                ),
+                ButtonSegment(
+                  value: OutdoorWorkoutType.running,
+                  icon: Icon(Icons.directions_run),
+                  label: Text('Running'),
+                ),
+                ButtonSegment(
+                  value: OutdoorWorkoutType.cycling,
+                  icon: Icon(Icons.directions_bike),
+                  label: Text('Cycling'),
+                ),
+              ],
+              selected: {provider.workoutType},
+              onSelectionChanged: (selection) {
+                provider.setWorkoutType(selection.first);
+              },
             ),
             const SizedBox(height: 10),
             Text(
               'Start your workout, keep moving, and finish to see your time, distance, pace, and route summary.',
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerLow,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                _workoutTypeHint(provider.workoutType),
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 20),
             if (provider.errorMessage != null) ...[
@@ -110,13 +148,35 @@ class _IdlePhase extends StatelessWidget {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Start Run'),
+                      : Text('Start ${provider.workoutTypeLabel}'),
             ),
           ],
         ),
       ),
     );
   }
+
+      IconData _workoutIcon(OutdoorWorkoutType type) {
+        switch (type) {
+          case OutdoorWorkoutType.walking:
+            return Icons.directions_walk;
+          case OutdoorWorkoutType.running:
+            return Icons.run_circle_outlined;
+          case OutdoorWorkoutType.cycling:
+            return Icons.directions_bike;
+        }
+      }
+
+      String _workoutTypeHint(OutdoorWorkoutType type) {
+        switch (type) {
+          case OutdoorWorkoutType.walking:
+            return 'Walking mode is ideal for steady low-impact cardio and daily step goals.';
+          case OutdoorWorkoutType.running:
+            return 'Running mode helps you push pace, endurance, and route consistency.';
+          case OutdoorWorkoutType.cycling:
+            return 'Cycling mode tracks longer distance efforts and smooth pace progression.';
+        }
+      }
 }
 
 class _ActivePhase extends StatelessWidget {
@@ -137,7 +197,7 @@ class _ActivePhase extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Workout in Progress',
+                  '${provider.workoutTypeLabel} in Progress',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 12),
@@ -192,12 +252,32 @@ class _ActivePhase extends StatelessWidget {
         FilledButton(
           onPressed: !provider.canFinish || provider.isLoadingLocation
               ? null
-              : () => provider.finishWorkout(),
+              : () async {
+                  await provider.finishWorkout();
+                  if (!context.mounted ||
+                      provider.workoutPhase != WorkoutPhase.finished) {
+                    return;
+                  }
+
+                  final selectedDistanceMeters = provider.routeDistanceMeters > 0
+                      ? provider.routeDistanceMeters
+                      : provider.distanceMeters;
+                  final distanceKm = selectedDistanceMeters / 1000;
+                  final stats =
+                      '${provider.formattedRouteDistance} in ${provider.formattedTime} at ${provider.formattedPace}.';
+
+                  await NotificationService().showWorkoutCompleteAlert(
+                    workoutName: provider.workoutTypeLabel,
+                    stats: stats,
+                    distanceKm: distanceKm,
+                    durationSeconds: provider.elapsedSeconds,
+                  );
+                },
           style: FilledButton.styleFrom(
             minimumSize: const Size.fromHeight(54),
             backgroundColor: Colors.red.shade600,
           ),
-          child: const Text('Finish Run'),
+          child: Text('Finish ${provider.workoutTypeLabel}'),
         ),
       ],
     );

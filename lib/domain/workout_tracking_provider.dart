@@ -7,6 +7,8 @@ import '../data/location_service.dart';
 
 enum WorkoutPhase { idle, active, finished }
 
+enum OutdoorWorkoutType { walking, running, cycling }
+
 class WorkoutTrackingProvider extends ChangeNotifier {
   WorkoutTrackingProvider(this._locationService);
 
@@ -27,6 +29,7 @@ class WorkoutTrackingProvider extends ChangeNotifier {
   Timer? _elapsedTimer;
   Timer? _locationPollingTimer;
   bool _isPollingLocation = false;
+  OutdoorWorkoutType _workoutType = OutdoorWorkoutType.running;
 
   WorkoutPhase get workoutPhase => _workoutPhase;
   Position? get startPosition => _startPosition;
@@ -39,6 +42,31 @@ class WorkoutTrackingProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get isLoadingLocation => _isLoadingLocation;
   List<Position> get routePoints => List.unmodifiable(_routePoints);
+  OutdoorWorkoutType get workoutType => _workoutType;
+
+  String get workoutTypeLabel {
+    switch (_workoutType) {
+      case OutdoorWorkoutType.walking:
+        return 'Walking';
+      case OutdoorWorkoutType.running:
+        return 'Running';
+      case OutdoorWorkoutType.cycling:
+        return 'Cycling';
+    }
+  }
+
+  void setWorkoutType(OutdoorWorkoutType type) {
+    if (_workoutPhase != WorkoutPhase.idle) {
+      return;
+    }
+
+    if (_workoutType == type) {
+      return;
+    }
+
+    _workoutType = type;
+    notifyListeners();
+  }
 
   Future<void> startWorkout() async {
     _isLoadingLocation = true;
@@ -138,6 +166,7 @@ class WorkoutTrackingProvider extends ChangeNotifier {
     _isLoadingLocation = false;
     _isPollingLocation = false;
     _routePoints.clear();
+    _workoutType = OutdoorWorkoutType.running;
 
     notifyListeners();
   }
